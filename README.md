@@ -204,6 +204,8 @@ keyboard_acoustic | guitar_acoustic |  |
 keyboard_acoustic | string_acoustic | 1e-5 | 1e-5
 keyboard_acoustic | synth_lead_synthetic | 1e-4 | 1e-5
 
+### Training phase
+
 The training history is displayed below for the 100 training epochs, using all the instrument pairs with keyboard_acoustic as origin.  
 
 #### keyboard_acoustic_2_guitar_acoustic
