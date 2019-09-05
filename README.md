@@ -7,6 +7,16 @@ The pix2pix architecture has proven effective for natural images, and the author
 
 Musical timbre transfer consists on obtaining a melody played by a target instrument given the same melody played by the original instrument. Namely, the process changes the style from one instrument into another preserving the semantic content of the song. 
 
+#### A visual example
+
+The following table shows one STFT spectrogram frame of the same melody played by the 4 different instruments considered in this work. These images serve as input and output for the Pix2Pix network. A more detailed explanation about spectrograms can be found in section "Methodology".
+
+<img src="docs/keyboard_acoustic.png" width="200" height="200"> | <img src="docs/guitar_acoustic.png" width="200" height="200"> | <img src="docs/string_acoustic.png" width="200" height="200"> | <img src="docs/synth_lead_synthetic.png" width="200" height="200"> 
+--- | --- | --- | ---
+Keyboard acoustic | Guitar acoustic | String acoustic | Synth Lead Synthetic
+
+The objective of this project is to train a network that is able to perform image translation between any instrument pair of this set. For simplicity, the Keyboard is considered the canonical instrument such that the translations presented here have Keyboard as origin and any of the remaining 3 as target. 
+
 # Quick reference
 ### Environment setup
 Clone this repository to your system.
@@ -78,7 +88,10 @@ The pix2pix architecture has been designed for image processing tasks, but in th
 ### Obtaining a Time-Frequency representation
 
 Audio applications using Machine Learning typically work better in Frequency domain than in Time domain. If an appropriate time-frequency transform, like the Short Time Fourier Transform (STFT) is applied to the time domain signal, the result is a 2D representation called a Spectrogram where the axes correspond to time (horizontal) and frequency (vertical).  
-[],[]
+
+<img src="docs/keyboard_acoustic_plot_0_10000.png" width="256" height="256"> | <img src="docs/keyboard_acoustic.png" width="256" height="256"> 
+--- | --- 
+Time domain (Waveform) | Frequency domain (Spectrogram, STFT)
 
 The spectrograms are computed from the audios using the librosa.stft() function with a Hanning window of size 1024 and an overlap of 50% (hop size of 512), which gives a resolution of 513 frequency bins. The Sampling Rate of the input audio is 44.1kHz. These parameters have been found to provide a reasonable time-frequency compromise for this application. 
 
@@ -88,7 +101,7 @@ Strictly speaking, the values of the Spectrogram returned by the STFT operation 
 
 The component that carries the most relevant information is the magnitude, and it is the only one passed to the network, as shown in this diagram:
 
-[]
+<img src="docs/Pix2Pix Timbre Transfer.png" width="960" height="391">
 
 ### Reconstructing the audio
 
