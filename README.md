@@ -1,7 +1,9 @@
 # Pix2Pix Timbre Transfer
  Musical Timbre Transfer using the Pix2Pix architecture
 
-The Pix2Pix architecture has proven effective for natural images, and the authors of the original paper claim that it can perform well the problem of image-to-image translation. However, synthetic images may present a challenging use scenario. In this work, we focus on using the pix2pix architecture to generate audio in a similar fashion as the style transfer problem to test the performance of this network. 
+The Pix2Pix architecture has proven effective for natural images, and the authors of the [original paper](https://arxiv.org/pdf/1611.07004.pdf) claim that it can perform well the problem of image-to-image translation. However, synthetic images may present a challenging use scenario. 
+
+In this work, we use the Pix2Pix architecture for a substantially different application: to generate audio in a similar fashion as the style transfer problem. 
 
 ### What is musical timbre transfer?
 
@@ -83,7 +85,7 @@ $ python train_generator.py --dataset_path <DATASET_PATH>
 
 # Methodology
 
-The Pix2Pix architecture has been designed for image processing tasks, but in this case the format of the data is audio. Therefore, a preprocessing step to convert a 1D audio signal into a 2D signal (image) is required.
+The Pix2Pix architecture has been designed for image processing tasks, but in this case the format of the data is audio. Therefore, a preprocessing step to convert a 1D signal (audio) into a 2D signal (image) is required.
 
 ### Obtaining a Time-Frequency representation
 
