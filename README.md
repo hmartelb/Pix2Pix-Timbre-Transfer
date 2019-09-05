@@ -1,7 +1,7 @@
 # Pix2Pix Timbre Transfer
  Musical Timbre Transfer using the Pix2Pix architecture
 
-The pix2pix architecture has proven effective for natural images, and the authors of the original paper claim that it can perform well the problem of image-to-image translation. However, synthetic images may present a challenging use scenario. In this work, we focus on using the pix2pix architecture to generate audio in a similar fashion as the style transfer problem to test the performance of this network. 
+The Pix2Pix architecture has proven effective for natural images, and the authors of the original paper claim that it can perform well the problem of image-to-image translation. However, synthetic images may present a challenging use scenario. In this work, we focus on using the pix2pix architecture to generate audio in a similar fashion as the style transfer problem to test the performance of this network. 
 
 ### What is musical timbre transfer?
 
@@ -50,7 +50,7 @@ $ python compute_features.py --audios <AUDIOS_PATH>
 			    --features <FEATURES_PATH>
 ```
 ### Pix2Pix training
-Train the Pix2Pix network with the train.py script, specifying the instrument pair to convert from origin to target, and the path where the dataset is located. 
+Train the Pix2Pix network with the ``train.py`` script, specifying the instrument pair to convert from origin to target, and the path where the dataset is located. 
 ```
 $ python train.py --dataset_path <DATASET_PATH> 
                   --origin <ORIGIN>
@@ -65,7 +65,7 @@ $ python train.py --dataset_path <DATASET_PATH>
                  [--findlr <FINDLR>]
 ```
 ### Generator only training
-It is also possible to train only the generator network with the train_generator.py script, specifying the instrument pair to convert from origin to target, and the path where the dataset is located. 
+It is also possible to train only the generator network with the ``train_generator.py`` script, specifying the instrument pair to convert from origin to target, and the path where the dataset is located. 
 ```
 $ python train_generator.py --dataset_path <DATASET_PATH> 
                             --origin <ORIGIN>
@@ -83,7 +83,7 @@ $ python train_generator.py --dataset_path <DATASET_PATH>
 
 # Methodology
 
-The pix2pix architecture has been designed for image processing tasks, but in this case the format of the data is audio. Therefore, a preprocessing step to convert a 1D audio signal into a 2D signal (image) is required.
+The Pix2Pix architecture has been designed for image processing tasks, but in this case the format of the data is audio. Therefore, a preprocessing step to convert a 1D audio signal into a 2D signal (image) is required.
 
 ### Obtaining a Time-Frequency representation
 
@@ -93,13 +93,13 @@ Audio applications using Machine Learning typically work better in Frequency dom
 --- | --- 
 Time domain (Waveform) | Frequency domain (Spectrogram, STFT)
 
-The spectrograms are computed from the audios using the librosa.stft() function with a Hanning window of size 1024 and an overlap of 50% (hop size of 512), which gives a resolution of 513 frequency bins. The Sampling Rate of the input audio is 44.1kHz. These parameters have been found to provide a reasonable time-frequency compromise for this application. 
+The spectrograms are computed from the audios using the ``librosa.stft()`` function with a Hanning window of size 1024 and an overlap of 50% (hop size of 512), which gives a resolution of 513 frequency bins. The Sampling Rate of the input audio is 44.1kHz. These parameters have been found to provide a reasonable time-frequency compromise for this application. 
 
-One observation is that the original Sampling Rate of 16kHz of the NSynth dataset makes the spectrograms have no content above 8kHz, according to the Nyquist-Shannon sampling theorem (https://en.wikipedia.org/wiki/Nyquist–Shannon_sampling_theorem). Since the spectrograms are computed up to 22.05kHz in this case, as we use a Sampling Rate of 44.1kHz for professional audio, it is safe to trim one half of the image corresponding to High Frequencies because there is no content (i.e. the magnitude is all zeros in this region).
+>The original Sampling Rate of 16kHz of the NSynth dataset makes the spectrograms have no content above 8kHz, according to the [Nyquist-Shannon sampling theorem](https://en.wikipedia.org/wiki/Nyquist–Shannon_sampling_theorem). Since the spectrograms are computed up to 22.05kHz in this case, as we use a Sampling Rate of 44.1kHz for professional audio, it is safe to trim one half of the image corresponding to High Frequencies because there is no content (i.e. the magnitude is all zeros in this region).
 
 ### Forward pass
 
-Strictly speaking, the values of the Spectrogram returned by the STFT operation are complex numbers. Therefore, for the network to process the data it needs to be decomposed further. The magnitude of the signal is the modulus of Spectrogram, namely np.abs(S) and the phase of the signal is the angle, obtained as np.angle(S). 
+Strictly speaking, the values of the Spectrogram returned by the STFT operation are complex numbers. Therefore, for the network to process the data it needs to be decomposed further. The magnitude of the signal is the modulus of Spectrogram, namely ``np.abs(S)`` and the phase of the signal is the angle, obtained as ``np.angle(S)``. 
 
 The component that carries the most relevant information is the magnitude, and it is the only one passed to the network, as shown in this diagram:
 <p align="center">
@@ -109,16 +109,15 @@ The component that carries the most relevant information is the magnitude, and i
 ### Reconstructing the audio
 
 Both magnitude and phase are required to reconstruct the audio from a Spectrogram, so we need to estimate the phase in some way.
+
 Generating flat or random phases does not produce a decent result. Therefore, a more sophisticated phase estimation method is also necessary. The following can be implemented in the “Phase estimator” block as possible solutions: 
 
-1.	Griffin-Lim algorithm 
-(https://pdfs.semanticscholar.org/14bc/876fae55faf5669beb01667a4f3bd324a4f1.pdf)
-2.	Reconstruction using the input phase (the phase estimator is the identity function)
-3.	Alternatively: 
-* Use another Pix2Pix network to learn the phase
-* Pass magnitude and phase as 2 channels to a single Pix2Pix network
+1. [Griffin-Lim algorithm](https://pdfs.semanticscholar.org/14bc/876fae55faf5669beb01667a4f3bd324a4f1.pdf)
+2. Reconstruction using the input phase (the phase estimator is the identity function)
+3. Use another Pix2Pix network to learn the phase
+4. Pass magnitude and phase as 2 channels to a single Pix2Pix network
 
-Some authors from the research literature claim that (1) may not converge into an acceptable result [https://arxiv.org/pdf/1811.09620.pdf], and any of the proposals in (3) is error prone since it can produce inconsistent spectrograms that are not invertible into a time-domain signal [http://www.jonathanleroux.org/pdf/Gerkmann2015SPM03.pdf]. 
+Some authors from the research literature claim that (1) may not converge into an acceptable result [https://arxiv.org/pdf/1811.09620.pdf], and any of the proposals in (3,4) are error prone since they can produce inconsistent spectrograms that are not invertible into a time-domain signal [http://www.jonathanleroux.org/pdf/Gerkmann2015SPM03.pdf]. 
 
 Consequently, (2) has been chosen for being the one with less computational cost, less error prone, and best perceptual output quality. 
 
@@ -128,13 +127,17 @@ Given the description of the problem, the dataset must contain the same audios p
 
 For this reason, the audios of the dataset have been synthesized from MIDI files to obtain coherent and reliable data from different instruments. By doing this we ensure that the only change between two audios is the timbre, although this has its own limitations. 
 
+### Dataset download
+
 The dataset has been created using a combination of two publicly available datasets:
 
 * Classical Music MIDI, from Kaggle: https://www.kaggle.com/soumikrakshit/classical-music-midi
 
 * The NSynth Dataset, “A large-scale and high-quality dataset of annotated musical notes”, Magenta Project (Google AI): https://magenta.tensorflow.org/datasets/nsynth
 
-Alternatively, the MAESTRO Dataset contains more than 200 hours of music in MIDI format and can be used to generate an even larger collection of synthesized music. Although the resulting size of the synthesized dataset made it impractical for the scope of this project, the author encourages other researchers with more computing resources to try this option as well. 
+### Alternative dataset
+
+The MAESTRO Dataset contains more than 200 hours of music in MIDI format and can be used to generate an even larger collection of synthesized music. Although the resulting size of the synthesized dataset made it impractical for the scope of this project, the author encourages other researchers with more computing resources to try this option as well. 
 
 * The MAESTRO Dataset “MIDI and Audio Edited for Synchronous TRacks and Organization”, Magenta Project (Google AI): https://magenta.tensorflow.org/datasets/maestro
 
@@ -153,7 +156,7 @@ The procedure has been done with all the MIDI files in (1) and with the followin
 
 ### Pre/Post processing
 
-The Magnitude Spectrograms are converted from linear domain to logarithmic domain using the function amplitude_to_db() within the data.py module, inspired from librosa but adapted to avoid zero-valued regions. The implication of this is that the magnitudes are in decibels (dB), and the distribution of the magnitude values is more similar to how humans hear.  
+The Magnitude Spectrograms are converted from linear domain to logarithmic domain using the function ``amplitude_to_db()`` within the ``data.py`` module, inspired from librosa but adapted to avoid zero-valued regions. The implication of this is that the magnitudes are in decibels (dB), and the distribution of the magnitude values is more similar to how humans hear.  
 
 The minimum magnitude considered to be greater than zero is amin, expressed as the minimum increment of a 16 bit representation (-96 dB).    
 ```python
@@ -164,10 +167,10 @@ mag_db /= 20 * np.log1p(1 / amin) # Normalization
 
 Finally, the range is normalized to be within [-1,1] instead of [0,1] using the following conversion:
 ```python
-S = S * 2 - 1
+mag_db = mag_db * 2 - 1
 ```
 
-To recover the audio, the inverse operations must be performed. Denormalize to [0,1], convert from logarithmic to linear using the function db_to_amplitude() from data.py, and then compute the inverse STFT using librosa.istft() using the magnitude and the phase estimations. The complex spectrogram and the final audio can be obtained from the magnitude and phase as: 
+To recover the audio, the inverse operations must be performed. Denormalize to [0,1], convert from logarithmic to linear using the function ``db_to_amplitude()`` from ``data.py``, and then compute the inverse STFT using ``librosa.istft()`` using the magnitude and the phase estimations. The complex spectrogram and the final audio can be obtained from the magnitude and phase as: 
 ```python
 S = mag * np.exp(1j * phase)
 audio = librosa.istft(S,...)
@@ -185,6 +188,10 @@ After some inconclusive experiments setting the batch size to 1, 2 and 4, the be
 
 The learning rate has been searched using the Learning Rate Finder method mentioned in this blog post from “Towards Data Science” [https://towardsdatascience.com/estimating-optimal-learning-rate-for-a-deep-neural-network-ce32f2556ce0]. The search was performed separately for the generator, the discriminator and the joint adversarial system. The best learning rate is not the lowest loss, but the one with the steepest slope. This example shows the results for keyboard_acoustic_2_string_acoustic: 
 
-<img src="docs/LRFinder_disc_loss.tiff" width="200" height="200"> | <img src="docs/LRFinder_disc_loss.tiff" width="200" height="200"> | <img src="docs/LRFinder_disc_loss.tiff" width="200" height="200"> 
+<img src="docs/LRFinder_gen_mae.png" width="200" height="200"> | <img src="docs/LRFinder_disc_loss.png" width="200" height="200"> | <img src="docs/LRFinder_gen_loss.png" width="200" height="200"> 
 --- | --- | --- 
-Generator MAE | Discriminator loss | Join GAN loss
+Generator MAE | Discriminator loss | Joint GAN loss
+
+Not only the learning rate has been found to be orders of magnitude lower than expected, but also different for the Generator and the Discriminator depending on the instrument pair. The optimal values found with this method are the following: 
+
+
