@@ -185,6 +185,6 @@ After some inconclusive experiments setting the batch size to 1, 2 and 4, the be
 
 The learning rate has been searched using the Learning Rate Finder method mentioned in this blog post from “Towards Data Science” [https://towardsdatascience.com/estimating-optimal-learning-rate-for-a-deep-neural-network-ce32f2556ce0]. The search was performed separately for the generator, the discriminator and the joint adversarial system. The best learning rate is not the lowest loss, but the one with the steepest slope. This example shows the results for keyboard_acoustic_2_string_acoustic: 
 
-<img src="docs/LRFinder_gen_mae.png" width="200" height="200"> | <img src="docs/LRFinder_disc_loss.png" width="200" height="200"> | <img src="docs/LRFinder_.png" width="200" height="200"> 
+<img src="docs/LRFinder_disc_loss.tiff" width="200" height="200"> | <img src="docs/LRFinder_disc_loss.tiff" width="200" height="200"> | <img src="docs/LRFinder_disc_loss.tiff" width="200" height="200"> 
 --- | --- | --- 
 Generator MAE | Discriminator loss | Join GAN loss
