@@ -384,6 +384,8 @@ I would like to thank Carlos from the [YouTube channel DotCSV](https://www.youtu
 
 The challenge has been a major motivation to do this research on the topic of Timbre Transfer and develop this code. Regardless of the outcome of the challenge, I hope this work to be helpful in some way in further Machine Listening research.  
 
+Finally, thank you to various faculty members from the [Music Technology Group (MTG) at Universitat Pompeu Fabra](https://www.upf.edu/web/mtg) in Barcelona (Spain) for their valuable feedback and continuous support to my career since I was an undergraduate student there.
+
 # Contact
 >[Table of contents](#table-of-contents)
 
