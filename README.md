@@ -120,7 +120,7 @@ The Pix2Pix architecture has been designed for image processing tasks, but in th
 
 Audio applications using Machine Learning typically work better in Frequency domain than in Time domain. If an appropriate time-frequency transform, like the Short Time Fourier Transform (STFT) is applied to the time domain signal, the result is a 2D representation called a Spectrogram where the axes correspond to time (horizontal) and frequency (vertical).  
 
-<img src="docs/keyboard_acoustic_plot_0_10000.png" width="256" height="256"> | <img src="docs/examples/keyboard_acoustic.png" width="256" height="256"> 
+<img src="docs/keyboard_acoustic_plot_0_10000.png" width="256" height="256"> | <img src="docs/examples/keyboard_acoustic.png" width="200" height="200"> 
 --- | --- 
 Time domain (Waveform) | Frequency domain (Spectrogram, STFT)
 
