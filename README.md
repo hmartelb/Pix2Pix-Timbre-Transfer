@@ -1,5 +1,21 @@
 # Pix2Pix Timbre Transfer
  Musical Timbre Transfer using the Pix2Pix architecture
+ 
+ # Table of contents
+
+* [Introduction](#introduction)
+* [Quick reference](#quick-reference)
+* [Methodology](#methodology)
+* [Dataset](#dataset)
+* [Training](#training)
+* [Results](#results)
+* [Conclusion](#conclusion)
+* [Future work](#future-work)
+* [Acknowledgements](#acknowledgements)
+* [Contact](#contact)
+* [License](#license)
+
+# Introduction
 
 The Pix2Pix architecture has proven effective for natural images, and the authors of the [original paper](https://arxiv.org/pdf/1611.07004.pdf) claim that it can perform well the problem of image-to-image translation. However, synthetic images may present a challenging use scenario. 
 
