@@ -122,9 +122,9 @@ The ``/models`` folder of this repository contains the training history and the 
 Since the weights of the trained models are too large for the Github repository, [this alternative link to Google Drive](https://drive.google.com/open?id=1baKYIA3uurrXkh1V0-fMWkgvW4iEWJh8) is provided. 
 
 Individual models
-* [keyboard_acoustic_2_guitar_acoustic]() | 
-* [keyboard_acoustic_2_string_acoustic](https://drive.google.com/open?id=1TUMI0NK9hP26BqiQUAqNa7woHJ23JoME) |
-* [keyboard_acoustic_2_synth_lead_synthetic](https://drive.google.com/open?id=1LuriwjzxN3C5SJzeDFZllEOMtjZcUDYf) |
+* [keyboard_acoustic_2_guitar_acoustic]() 
+* [keyboard_acoustic_2_string_acoustic](https://drive.google.com/open?id=1TUMI0NK9hP26BqiQUAqNa7woHJ23JoME)
+* [keyboard_acoustic_2_synth_lead_synthetic](https://drive.google.com/open?id=1LuriwjzxN3C5SJzeDFZllEOMtjZcUDYf)
 
 To use a pretrained model simply run the ``predict.py`` script specifying the path to the trained model, the location of the input audio and the name of the output audio.
 ```
@@ -340,9 +340,9 @@ The ``/models`` folder of this repository contains the training history and the 
 Since the weights of the trained models are too large for the Github repository, [this alternative link to Google Drive](https://drive.google.com/open?id=1baKYIA3uurrXkh1V0-fMWkgvW4iEWJh8) is provided. 
 
 Individual models
-* [keyboard_acoustic_2_guitar_acoustic]() | 
-* [keyboard_acoustic_2_string_acoustic](https://drive.google.com/open?id=1TUMI0NK9hP26BqiQUAqNa7woHJ23JoME) |
-* [keyboard_acoustic_2_synth_lead_synthetic](https://drive.google.com/open?id=1LuriwjzxN3C5SJzeDFZllEOMtjZcUDYf) |
+* [keyboard_acoustic_2_guitar_acoustic]()
+* [keyboard_acoustic_2_string_acoustic](https://drive.google.com/open?id=1TUMI0NK9hP26BqiQUAqNa7woHJ23JoME)
+* [keyboard_acoustic_2_synth_lead_synthetic](https://drive.google.com/open?id=1LuriwjzxN3C5SJzeDFZllEOMtjZcUDYf)
 
 To use a pretrained model simply run the ``predict.py`` script specifying the path to the trained model, the location of the input audio and the name of the output audio.
 ```
