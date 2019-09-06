@@ -26,13 +26,23 @@ In this work, we use the Pix2Pix architecture for a substantially different appl
 
 Musical timbre transfer consists on obtaining a melody played by a target instrument given the same melody played by the original instrument. Namely, the process changes the style from one instrument into another preserving the semantic content of the song. 
 
+#### An audible example
+
+The best way to understand the problem is to listen to some audio examples. In particular, the 4 from the ``/docs/examples`` folder of this repository should provide an idea and are the ones that will be used thoughout this documentation. 
+
+[Keyboard acoustic](docs/examples/keyboard_acoustic.wav)
+[Guitar acoustic](docs/examples/guitar_acoustic.wav)
+[String acoustic](docs/examples/string_acoustic.wav)
+[Synth Lead synthetic](docs/examples/synth_lead_synthetic.wav)
+--- | --- | --- | ---
+
 #### A visual example
 
 The following table shows one STFT spectrogram frame of the same melody played by the 4 different instruments considered in this work. These images serve as input and output for the Pix2Pix network. A more detailed explanation about spectrograms can be found in section "Methodology".
 
 <img src="docs/examples/keyboard_acoustic.png" width="200" height="200"> | <img src="docs/examples/guitar_acoustic.png" width="200" height="200"> | <img src="docs/examples/string_acoustic.png" width="200" height="200"> | <img src="docs/examples/synth_lead_synthetic.png" width="200" height="200"> 
 --- | --- | --- | ---
-Keyboard acoustic | Guitar acoustic | String acoustic | Synth Lead Synthetic
+Keyboard acoustic | Guitar acoustic | String acoustic | Synth Lead synthetic
 
 The objective of this project is to train a network that is able to perform image translation between any instrument pair of this set. For simplicity, the Keyboard is considered the canonical instrument such that the translations presented here have Keyboard as origin and any of the remaining 3 as target. 
 
@@ -261,6 +271,21 @@ Generator MAE | Discriminator loss | Joint GAN loss
 >[Table of contents](#table-of-contents)
 
 ### Visualizations
+
+#### keyboard_acoustic_2_guitar_acoustic
+<img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_input.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_true.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/prediction.gif" width="340" height="256">
+--- | --- | ---
+Input spectrogram | True target | Prediction over 100 epochs
+
+#### keyboard_acoustic_2_string_acoustic
+<img src="docs/results/keyboard_acoustic_2_string_acoustic/spectrogram_input.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_string_acoustic/spectrogram_true.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_string_acoustic/prediction.gif" width="340" height="256">
+--- | --- | ---
+Input spectrogram | True target | Prediction over 100 epochs
+
+#### keyboard_acoustic_2_synth_lead_synthetic
+<img src="docs/results/keyboard_acoustic_2_synth_lead_synthetic/spectrogram_input.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_synth_lead_synthetic/spectrogram_true.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_synth_lead_synthetic/prediction.gif" width="340" height="256">
+--- | --- | ---
+Input spectrogram | True target | Prediction over 100 epochs
 
 ### Audios
 
