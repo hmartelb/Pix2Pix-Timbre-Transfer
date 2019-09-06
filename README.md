@@ -1,5 +1,22 @@
 # Pix2Pix Timbre Transfer
  Musical Timbre Transfer using the Pix2Pix architecture
+ 
+ # Table of contents
+
+* [Introduction](#introduction)
+* [Quick reference](#quick-reference)
+* [Methodology](#methodology)
+* [Dataset](#dataset)
+* [Training](#training)
+* [Results](#results)
+* [Conclusion](#conclusion)
+* [Future work](#future-work)
+* [Acknowledgements](#acknowledgements)
+* [Contact](#contact)
+* [License](#license)
+
+# Introduction
+>[Table of contents](#table-of-contents)
 
 The Pix2Pix architecture has proven effective for natural images, and the authors of the [original paper](https://arxiv.org/pdf/1611.07004.pdf) claim that it can perform well the problem of image-to-image translation. However, synthetic images may present a challenging use scenario. 
 
@@ -13,13 +30,15 @@ Musical timbre transfer consists on obtaining a melody played by a target instru
 
 The following table shows one STFT spectrogram frame of the same melody played by the 4 different instruments considered in this work. These images serve as input and output for the Pix2Pix network. A more detailed explanation about spectrograms can be found in section "Methodology".
 
-<img src="docs/keyboard_acoustic.png" width="200" height="200"> | <img src="docs/guitar_acoustic.png" width="200" height="200"> | <img src="docs/string_acoustic.png" width="200" height="200"> | <img src="docs/synth_lead_synthetic.png" width="200" height="200"> 
+<img src="docs/examples/keyboard_acoustic.png" width="200" height="200"> | <img src="docs/examples/guitar_acoustic.png" width="200" height="200"> | <img src="docs/examples/string_acoustic.png" width="200" height="200"> | <img src="docs/examples/synth_lead_synthetic.png" width="200" height="200"> 
 --- | --- | --- | ---
 Keyboard acoustic | Guitar acoustic | String acoustic | Synth Lead Synthetic
 
 The objective of this project is to train a network that is able to perform image translation between any instrument pair of this set. For simplicity, the Keyboard is considered the canonical instrument such that the translations presented here have Keyboard as origin and any of the remaining 3 as target. 
 
 # Quick reference
+>[Table of contents](#table-of-contents)
+
 ### Environment setup
 Clone this repository to your system.
 ```
@@ -29,7 +48,7 @@ Make sure that you have Python 3 installed in your system. It is recommended to 
 ```
 $ pip install -r requirements.txt
 ```
-### Dataset
+### Dataset generation
 Download the NSynth Dataset and the Classical Music MIDI Dataset.
 * The NSynth Dataset, “A large-scale and high-quality dataset of annotated musical notes.” 
 https://magenta.tensorflow.org/datasets/nsynth
@@ -83,7 +102,17 @@ $ python train_generator.py --dataset_path <DATASET_PATH>
 
 ### Using a pretrained model
 
+The weights of the trained models can be found in the ``/models`` folder of this repository in separate directories for each instrument pair. The training history and the learning rate search results can be found in the same path.
+
+To use a pretrained model simply run the ``predict.py`` script specifying the path to the trained model, the location of the input audio and the name of the output audio.
+```
+$ python predict.py --model <GENERATOR_WEIGHTS> 
+                     --input <INPUT_AUDIO>
+                     --output <OUTPUT_AUDIO>
+```
+
 # Methodology
+>[Table of contents](#table-of-contents)
 
 The Pix2Pix architecture has been designed for image processing tasks, but in this case the format of the data is audio. Therefore, a preprocessing step to convert a 1D signal (audio) into a 2D signal (image) is required.
 
@@ -91,7 +120,7 @@ The Pix2Pix architecture has been designed for image processing tasks, but in th
 
 Audio applications using Machine Learning typically work better in Frequency domain than in Time domain. If an appropriate time-frequency transform, like the Short Time Fourier Transform (STFT) is applied to the time domain signal, the result is a 2D representation called a Spectrogram where the axes correspond to time (horizontal) and frequency (vertical).  
 
-<img src="docs/keyboard_acoustic_plot_0_10000.png" width="256" height="256"> | <img src="docs/keyboard_acoustic.png" width="256" height="256"> 
+<img src="docs/keyboard_acoustic_plot_0_10000.png" width="256" height="256"> | <img src="docs/examples/keyboard_acoustic.png" width="200" height="200"> 
 --- | --- 
 Time domain (Waveform) | Frequency domain (Spectrogram, STFT)
 
@@ -124,6 +153,7 @@ Some authors from the research literature claim that (1) may not converge into a
 Consequently, (2) has been chosen for being the one with less computational cost, less error prone, and best perceptual output quality. 
 
 # Dataset
+>[Table of contents](#table-of-contents)
 
 Given the description of the problem, the dataset must contain the same audios played by different instruments. Unfortunately, this is very complex to achieve with human performances because of time alignment and note intensity differences, or even instrument tuning changes due to their physical construction. 
 
@@ -179,6 +209,7 @@ audio = librosa.istft(S,...)
 ```
 
 # Training
+>[Table of contents](#table-of-contents)
 
 The adversarial networks have been trained in a single GTX 1080Ti GPU for 100 epochs using magnitude spectrograms of dimensions (256,256,1), a validation split of 0.1, 22875 examples per instrument pair, Adam optimizer, and Lambda of 100 as in the original Pix2Pix paper. 
 
@@ -192,7 +223,7 @@ The learning rate has been searched using the Learning Rate Finder method mentio
 
 The search was performed separately for the generator, the discriminator and the joint adversarial system. The best learning rate is not the lowest loss, but the one with the steepest slope. This example shows the results for keyboard_acoustic_2_guitar_acoustic: 
 
-<img src="docs/LRFinder_gen_mae.png" width="250" height="250"> | <img src="docs/LRFinder_disc_loss.png" width="250" height="250"> | <img src="docs/LRFinder_gen_loss.png" width="250" height="250"> 
+<img src="docs/training/LRFinder_gen_mae.png" width="250" height="250"> | <img src="docs/training/LRFinder_disc_loss.png" width="250" height="250"> | <img src="docs/training/LRFinder_gen_loss.png" width="250" height="250"> 
 --- | --- | --- 
 Generator MAE | Discriminator loss | Joint GAN loss
 
@@ -200,7 +231,7 @@ Not only the learning rate has been found to be orders of magnitude lower than e
 
 Origin | Target | Generator LR | Discriminator LR
 --- | --- | --- | ---
-keyboard_acoustic | guitar_acoustic |  | 
+keyboard_acoustic | guitar_acoustic | 5e-5 | 5e-6
 keyboard_acoustic | string_acoustic | 1e-5 | 1e-5
 keyboard_acoustic | synth_lead_synthetic | 1e-4 | 1e-5
 
@@ -209,24 +240,25 @@ keyboard_acoustic | synth_lead_synthetic | 1e-4 | 1e-5
 The training history is displayed below for the 100 training epochs, using all the instrument pairs with keyboard_acoustic as origin.  
 
 #### keyboard_acoustic_2_guitar_acoustic
-<img src="docs/LRFinder_gen_mae.png" width="250" height="250"> | <img src="docs/LRFinder_disc_loss.png" width="250" height="250"> | <img src="docs/LRFinder_gen_loss.png" width="250" height="250"> 
+<img src="docs/training/keyboard_acoustic_2_guitar_acoustic/gen_mae_history.png" width="250" height="250"> | <img src="docs/training/keyboard_acoustic_2_guitar_acoustic/disc_loss_history.png" width="250" height="250"> | <img src="docs/training/keyboard_acoustic_2_guitar_acoustic/gen_loss_history.png" width="250" height="250"> 
 --- | --- | --- 
 Generator MAE | Discriminator loss | Joint GAN loss
-(best = ) | (best = )  | (best = ) 
+(best = , last = ) | (best = , last = )  | (best = , last = ) 
 
 #### keyboard_acoustic_2_string_acoustic
-<img src="docs/LRFinder_gen_mae.png" width="250" height="250"> | <img src="docs/LRFinder_disc_loss.png" width="250" height="250"> | <img src="docs/LRFinder_gen_loss.png" width="250" height="250"> 
+<img src="docs/training/keyboard_acoustic_2_string_acoustic/gen_mae_history.png" width="250" height="250"> | <img src="docs/training/keyboard_acoustic_2_string_acoustic/disc_loss_history.png" width="250" height="250"> | <img src="docs/training/keyboard_acoustic_2_string_acoustic/gen_loss_history.png" width="250" height="250"> 
 --- | --- | --- 
 Generator MAE | Discriminator loss | Joint GAN loss
-(best = 0.0553) | (best = 0.6853)  | (best = 6.4461) 
+(best = 0.0553, last = 0.0553) | (best = 0.6853, last = 1.0921)  | (best = 6.4461, last = 6.5735) 
 
 #### keyboard_acoustic_2_synth_lead_synthetic
-<img src="docs/LRFinder_gen_mae.png" width="250" height="250"> | <img src="docs/LRFinder_disc_loss.png" width="250" height="250"> | <img src="docs/LRFinder_gen_loss.png" width="250" height="250"> 
+<img src="docs/training/keyboard_acoustic_2_synth_lead_synthetic/gen_mae_history.png" width="250" height="250"> | <img src="docs/training/keyboard_acoustic_2_synth_lead_synthetic/disc_loss_history.png" width="250" height="250"> | <img src="docs/training/keyboard_acoustic_2_synth_lead_synthetic/gen_loss_history.png" width="250" height="250"> 
 --- | --- | --- 
 Generator MAE | Discriminator loss | Joint GAN loss
-(best = 0.0222) | (best = 1.3097)  | (best = 2.9503) 
+(best = 0.0222, last = 0.0225) | (best = 1.3097, last = 1.3426)  | (best = 2.9503, last = 2.9925) 
 
 # Results
+>[Table of contents](#table-of-contents)
 
 ### Visualizations
 
@@ -244,16 +276,18 @@ $ python predict.py --model <GENERATOR_WEIGHTS>
 ```
 
 # Conclusion 
+>[Table of contents](#table-of-contents)
 
 # Future work
+>[Table of contents](#table-of-contents)
 
 There are some aspects of this work which have a considerable margin for improvement with further research. In this section, the author’s intention is to highlight some of the main lines to be followed in the future in the hope that they will help the research in this field. 
 
 ### Diversity of instruments
 
-As mentioned in the section “Dataset”, the single notes contained in the NSynth Dataset were used to synthesize the audios. In particular, the entire training has been performed using the preset 0 of each instrument pair. However, it may be interesting to experiment with other presets. 
+As mentioned in the section [Dataset](#dataset), the single notes contained in the NSynth Dataset were used to synthesize the audios. In particular, the entire training has been performed using the preset 0 of each instrument pair. However, it may be interesting to experiment with other presets. 
 
-Another way could be to generate new instruments using a pretrained Wavenet synthesizer to interpolate between the existing ones []. It would be even better in terms of diversity to create a custom dataset with the same structure as NSynth using a SoundFont synthesizer for each new instrument (.sf, .sf2 files).
+Another way could be to create a custom dataset with the same structure as NSynth using a SoundFont synthesizer for each new instrument (.sf, .sf2 files).
 
 ### Data augmentations
 
@@ -268,17 +302,22 @@ The scope of this project has been limited to explore 3 instrument pairs, having
 The proposed setting is similar to the neural style transfer problem. To condition the network to generate any instrument of the user’s choice, random notes played by the target instrument can be passed as an additional input. The task would be not just to perform a predetermined transformation, but to analyze input and target simultaneously to generate the prediction. 
 
 # Acknowledgements
+>[Table of contents](#table-of-contents)
 
 I would like to thank Carlos from the [YouTube channel DotCSV](https://www.youtube.com/channel/UCy5znSnfMsDwaLlROnZ7Qbg/videos) for organizing the [Pix2Pix challenge](https://www.youtube.com/watch?v=BNgAaCK920E) and elaborating a [tutorial on how to implement and train this architecture](https://www.youtube.com/watch?v=YsrMGcgfETY). The code and the tutorial were used as a starting point and adapted to the problem needs. Also, special mention to NVIDIA Corporation for providing the prize as a sponsorship for the challenge. 
 
 The challenge has been a major motivation to do this research on the topic of Timbre Transfer and develop this code. Regardless of the outcome of the challenge, I hope this work to be helpful in some way in further Machine Listening research.  
 
 # Contact
+>[Table of contents](#table-of-contents)
+
 Please do not hesitate to reach out to me if you find any issue with the code or if you have any questions. 
 * Personal email: hmartelb@hotmail.com
 * LinkedIn profile: https://www.linkedin.com/in/hmartelb/
 
 # License
+>[Table of contents](#table-of-contents)
+
 ```
 MIT License
 
