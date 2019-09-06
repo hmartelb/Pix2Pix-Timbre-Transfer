@@ -28,13 +28,17 @@ Musical timbre transfer consists on obtaining a melody played by a target instru
 
 #### An audible example
 
-The best way to understand the problem is to listen to some audio examples. In particular, the 4 from the ``/docs/examples`` folder of this repository should provide an idea and are the ones that will be used thoughout this documentation. To make listening easier while viewing this documentation, the reader can also access them from links to Google Drive where they are stored: 
+The best way to understand the problem is to listen to some audio examples. 
+
+In particular, the 4 from the ``/docs/examples`` folder of this repository should provide an idea and are the ones that will be used thoughout this documentation. 
 
 [Keyboard acoustic](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F)
 [Guitar acoustic](https://drive.google.com/open?id=1hGWHfV03yok2NSfXipK7KDVp9kTbUbjH)
 [String acoustic](https://drive.google.com/open?id=1mpaovd5T2IaXee2CyOWrUXEXRHg64LeB)
 [Synth Lead synthetic](https://drive.google.com/open?id=1VKfm4iGLnDPLn3BZ14yAcv5wFA6-bMms)
 --- | --- | --- | ---
+
+>To make listening easier while viewing this documentation, the reader can also access them from links to Google Drive where they are stored: 
 
 #### A visual example
 
