@@ -30,10 +30,10 @@ Musical timbre transfer consists on obtaining a melody played by a target instru
 
 The best way to understand the problem is to listen to some audio examples. In particular, the 4 from the ``/docs/examples`` folder of this repository should provide an idea and are the ones that will be used thoughout this documentation. 
 
-[Keyboard acoustic](docs/examples/keyboard_acoustic.wav)
-[Guitar acoustic](docs/examples/guitar_acoustic.wav)
-[String acoustic](docs/examples/string_acoustic.wav)
-[Synth Lead synthetic](docs/examples/synth_lead_synthetic.wav)
+[Keyboard acoustic](raw/master/docs/examples/keyboard_acoustic.wav)
+[Guitar acoustic](raw/master/docs/examples/guitar_acoustic.wav)
+[String acoustic](raw/master/docs/examples/string_acoustic.wav)
+[Synth Lead synthetic](raw/master/docs/examples/synth_lead_synthetic.wav)
 --- | --- | --- | ---
 
 #### A visual example
