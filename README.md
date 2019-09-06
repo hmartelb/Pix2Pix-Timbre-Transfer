@@ -28,17 +28,18 @@ Musical timbre transfer consists on obtaining a melody played by a target instru
 
 #### An audible example
 
-The best way to understand the problem is to listen to some audio examples. In particular, the 4 from the ``/docs/examples`` folder of this repository should provide an idea and are the ones that will be used thoughout this documentation. 
+The best way to understand the problem is to listen to some audio examples. In particular, the 4 from the ``/docs/examples`` folder of this repository should provide an idea and are the ones that will be used thoughout this documentation. To make listening easier while viewing this documentation, the reader can also access them from links to Google Drive where they are stored: 
 
-[Keyboard acoustic](raw/master/docs/examples/keyboard_acoustic.wav)
-[Guitar acoustic](raw/master/docs/examples/guitar_acoustic.wav)
-[String acoustic](raw/master/docs/examples/string_acoustic.wav)
-[Synth Lead synthetic](raw/master/docs/examples/synth_lead_synthetic.wav)
+[Keyboard acoustic](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F)
+[Guitar acoustic](https://drive.google.com/open?id=1hGWHfV03yok2NSfXipK7KDVp9kTbUbjH)
+[String acoustic](https://drive.google.com/open?id=1mpaovd5T2IaXee2CyOWrUXEXRHg64LeB)
+[Synth Lead synthetic](https://drive.google.com/open?id=1VKfm4iGLnDPLn3BZ14yAcv5wFA6-bMms)
 --- | --- | --- | ---
 
 #### A visual example
 
-The following table shows one STFT spectrogram frame of the same melody played by the 4 different instruments considered in this work. These images serve as input and output for the Pix2Pix network. A more detailed explanation about spectrograms can be found in section "Methodology".
+The following table shows one STFT spectrogram frame of the same melody from the above examples, played by the 4 different instruments considered in this work. These images serve as input and output for the Pix2Pix network. 
+> A more detailed explanation about spectrograms can be found in section [Methodology](#methodology).
 
 <img src="docs/examples/keyboard_acoustic.png" width="200" height="200"> | <img src="docs/examples/guitar_acoustic.png" width="200" height="200"> | <img src="docs/examples/string_acoustic.png" width="200" height="200"> | <img src="docs/examples/synth_lead_synthetic.png" width="200" height="200"> 
 --- | --- | --- | ---
@@ -270,6 +271,10 @@ Generator MAE | Discriminator loss | Joint GAN loss
 # Results
 >[Table of contents](#table-of-contents)
 
+The numeric value of the loss can serve as a performance metric during training, but the most important part of this applied work is to observe the results subjectively. This section showcases the results both visually and with audios. 
+
+At the end of every training epoch the same audio file has been used to generate a spectrogram frame and the corresponding audio with the target timbre. 
+
 ### Visualizations
 
 #### keyboard_acoustic_2_guitar_acoustic
@@ -288,6 +293,30 @@ Input spectrogram | True target | Prediction over 100 epochs
 Input spectrogram | True target | Prediction over 100 epochs
 
 ### Audios
+
+#### keyboard_acoustic_2_guitar_acoustic
+
+[Keyboard acoustic](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | 
+[Guitar acoustic](https://drive.google.com/open?id=1hGWHfV03yok2NSfXipK7KDVp9kTbUbjH) | 
+[keyboard_acoustic_2_guitar_acoustic]()
+--- | --- | --- 
+Input | Target | Prediction
+
+#### keyboard_acoustic_2_string_acoustic
+
+[Keyboard acoustic](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | 
+[String acoustic](https://drive.google.com/open?id=1mpaovd5T2IaXee2CyOWrUXEXRHg64LeB) | 
+[keyboard_acoustic_2_string_acoustic](https://drive.google.com/open?id=1HovCh4rNnPemSeQLVfdCdudaxFxY4mOt)
+--- | --- | --- 
+Input | Target | Prediction
+
+#### keyboard_acoustic_2_synth_lead_synthetic
+
+[Keyboard acoustic](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | 
+[Synth Lead synthetic](https://drive.google.com/open?id=1VKfm4iGLnDPLn3BZ14yAcv5wFA6-bMms) | 
+[keyboard_acoustic_2_synth_lead_synthetic](https://drive.google.com/open?id=12exCypMTuDLVe_t6aEMq2gBXMFN46Xl1)
+--- | --- | --- 
+Input | Target | Prediction
 
 ### Trained models
 
