@@ -155,13 +155,17 @@ Both magnitude and phase are required to reconstruct the audio from a Spectrogra
 Generating flat or random phases does not produce a decent result. Therefore, a more sophisticated phase estimation method is also necessary. The following can be implemented in the “Phase estimator” block as possible solutions: 
 
 1. [Griffin-Lim algorithm](https://pdfs.semanticscholar.org/14bc/876fae55faf5669beb01667a4f3bd324a4f1.pdf)
-2. Reconstruction using the input phase (the phase estimator is the identity function)
+2. Reconstruction using the input phase (the phase estimator is the identity function, trivial solution)
 3. Use another Pix2Pix network to learn the phase
 4. Pass magnitude and phase as 2 channels to a single Pix2Pix network
 
-Some authors from the research literature claim that (1) may not converge into an acceptable result [https://arxiv.org/pdf/1811.09620.pdf], and any of the proposals in (3,4) are error prone since they can produce inconsistent spectrograms that are not invertible into a time-domain signal [http://www.jonathanleroux.org/pdf/Gerkmann2015SPM03.pdf]. 
+Some authors from the research literature claim that (1) may not converge into an acceptable result for this particular problem [i], and any of the proposals in (3,4) are error prone since they will likely produce inconsistent spectrograms that are not invertible into a time-domain signal [ii]. 
 
-Consequently, (2) has been chosen for being the one with less computational cost, less error prone, and best perceptual output quality. 
+Consequently, (2) has been chosen for being the one with less computational cost, less error prone, and best perceptual output quality.
+
+> References of this section
+> * i - [TimbreTron: A WaveNet(CycleGAN(CQT(Audio))) Pipeline for Musical Timbre Transfer](https://arxiv.org/pdf/1811.09620.pdf)
+> * ii - [Phase Processing for Single-Channel Speech Enhancement](http://www.jonathanleroux.org/pdf/Gerkmann2015SPM03.pdf)
 
 # Dataset
 >[Table of contents](#table-of-contents)
