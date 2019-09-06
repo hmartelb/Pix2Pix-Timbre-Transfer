@@ -38,7 +38,7 @@ In particular, the 4 from the ``/docs/examples`` folder of this repository shoul
 [Synth Lead synthetic](https://drive.google.com/open?id=1VKfm4iGLnDPLn3BZ14yAcv5wFA6-bMms)
 --- | --- | --- | ---
 
->To make listening easier while viewing this documentation, the reader can also access them from links to Google Drive where they are stored: 
+>To make listening easier while viewing this documentation, the reader can access them from the above links to Google Drive, where they are stored
 
 #### A visual example
 
@@ -49,6 +49,7 @@ The following table shows one STFT spectrogram frame of the same melody from the
 --- | --- | --- | ---
 Keyboard acoustic | Guitar acoustic | String acoustic | Synth Lead synthetic
 
+#### Scope of the project
 The objective of this project is to train a network that is able to perform image translation between any instrument pair of this set. For simplicity, the Keyboard is considered the canonical instrument such that the translations presented here have Keyboard as origin and any of the remaining 3 as target. 
 
 # Quick reference
@@ -369,7 +370,7 @@ Another way could be to create a custom dataset with the same structure as NSynt
 
 Generate different versions of the audios by changing synthesis parameters, transposition, tempo, note length, etc.  or applying audio effects used in professional audio productions such as Reverb, EQ or Delay. 
 
-Alternatively, consider using the MAESTRO Dataset as mentioned in the section “Dataset” if you have more time and resources for your research.
+Alternatively, consider using the MAESTRO Dataset as mentioned in the section [Dataset](#dataset) if you have more time and resources for your research.
 
 ### Conditional architecture (any_2_any)
 
