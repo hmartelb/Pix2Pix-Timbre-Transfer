@@ -328,7 +328,14 @@ Input | Target | Prediction
 
 ### Trained models
 
-The weights of the trained models can be found in the ``/models`` folder of this repository in separate directories for each instrument pair. The training history and the learning rate search results can be found in the same path.
+The ``/models`` folder of this repository contains the training history and the learning rate search results in separate directories for each instrument pair.
+
+Since the weights of the trained models are too large for the Github repository, [this alternative link to Google Drive](https://drive.google.com/open?id=1baKYIA3uurrXkh1V0-fMWkgvW4iEWJh8) is provided. 
+
+Individual models
+* [keyboard_acoustic_2_guitar_acoustic]() | 
+* [keyboard_acoustic_2_string_acoustic](https://drive.google.com/open?id=1TUMI0NK9hP26BqiQUAqNa7woHJ23JoME) |
+* [keyboard_acoustic_2_synth_lead_synthetic](https://drive.google.com/open?id=1LuriwjzxN3C5SJzeDFZllEOMtjZcUDYf) |
 
 To use a pretrained model simply run the ``predict.py`` script specifying the path to the trained model, the location of the input audio and the name of the output audio.
 ```
@@ -357,7 +364,7 @@ Generate different versions of the audios by changing synthesis parameters, tran
 
 Alternatively, consider using the MAESTRO Dataset as mentioned in the section “Dataset” if you have more time and resources for your research.
 
-### Conditional architecture
+### Conditional architecture (any_2_any)
 
 The scope of this project has been limited to explore 3 instrument pairs, having only one pair fixed for each model. In other words, the model converts a specific origin into a specific target and cannot perform the timbre transfer operation properly if the origin or target instruments change. 
 
