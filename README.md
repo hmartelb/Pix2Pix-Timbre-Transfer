@@ -16,6 +16,7 @@
 * [License](#license)
 
 # Introduction
+>[Table of contents](#table-of-contents)
 
 The Pix2Pix architecture has proven effective for natural images, and the authors of the [original paper](https://arxiv.org/pdf/1611.07004.pdf) claim that it can perform well the problem of image-to-image translation. However, synthetic images may present a challenging use scenario. 
 
@@ -36,6 +37,8 @@ Keyboard acoustic | Guitar acoustic | String acoustic | Synth Lead Synthetic
 The objective of this project is to train a network that is able to perform image translation between any instrument pair of this set. For simplicity, the Keyboard is considered the canonical instrument such that the translations presented here have Keyboard as origin and any of the remaining 3 as target. 
 
 # Quick reference
+>[Table of contents](#table-of-contents)
+
 ### Environment setup
 Clone this repository to your system.
 ```
@@ -109,6 +112,7 @@ $ python predict.py --model <GENERATOR_WEIGHTS>
 ```
 
 # Methodology
+>[Table of contents](#table-of-contents)
 
 The Pix2Pix architecture has been designed for image processing tasks, but in this case the format of the data is audio. Therefore, a preprocessing step to convert a 1D signal (audio) into a 2D signal (image) is required.
 
@@ -149,6 +153,7 @@ Some authors from the research literature claim that (1) may not converge into a
 Consequently, (2) has been chosen for being the one with less computational cost, less error prone, and best perceptual output quality. 
 
 # Dataset
+>[Table of contents](#table-of-contents)
 
 Given the description of the problem, the dataset must contain the same audios played by different instruments. Unfortunately, this is very complex to achieve with human performances because of time alignment and note intensity differences, or even instrument tuning changes due to their physical construction. 
 
@@ -204,6 +209,7 @@ audio = librosa.istft(S,...)
 ```
 
 # Training
+>[Table of contents](#table-of-contents)
 
 The adversarial networks have been trained in a single GTX 1080Ti GPU for 100 epochs using magnitude spectrograms of dimensions (256,256,1), a validation split of 0.1, 22875 examples per instrument pair, Adam optimizer, and Lambda of 100 as in the original Pix2Pix paper. 
 
@@ -252,6 +258,7 @@ Generator MAE | Discriminator loss | Joint GAN loss
 (best = 0.0222, last = 0.0225) | (best = 1.3097, last = 1.3426)  | (best = 2.9503, last = 2.9925) 
 
 # Results
+>[Table of contents](#table-of-contents)
 
 ### Visualizations
 
@@ -269,8 +276,10 @@ $ python predict.py --model <GENERATOR_WEIGHTS>
 ```
 
 # Conclusion 
+>[Table of contents](#table-of-contents)
 
 # Future work
+>[Table of contents](#table-of-contents)
 
 There are some aspects of this work which have a considerable margin for improvement with further research. In this section, the author’s intention is to highlight some of the main lines to be followed in the future in the hope that they will help the research in this field. 
 
@@ -293,17 +302,22 @@ The scope of this project has been limited to explore 3 instrument pairs, having
 The proposed setting is similar to the neural style transfer problem. To condition the network to generate any instrument of the user’s choice, random notes played by the target instrument can be passed as an additional input. The task would be not just to perform a predetermined transformation, but to analyze input and target simultaneously to generate the prediction. 
 
 # Acknowledgements
+>[Table of contents](#table-of-contents)
 
 I would like to thank Carlos from the [YouTube channel DotCSV](https://www.youtube.com/channel/UCy5znSnfMsDwaLlROnZ7Qbg/videos) for organizing the [Pix2Pix challenge](https://www.youtube.com/watch?v=BNgAaCK920E) and elaborating a [tutorial on how to implement and train this architecture](https://www.youtube.com/watch?v=YsrMGcgfETY). The code and the tutorial were used as a starting point and adapted to the problem needs. Also, special mention to NVIDIA Corporation for providing the prize as a sponsorship for the challenge. 
 
 The challenge has been a major motivation to do this research on the topic of Timbre Transfer and develop this code. Regardless of the outcome of the challenge, I hope this work to be helpful in some way in further Machine Listening research.  
 
 # Contact
+>[Table of contents](#table-of-contents)
+
 Please do not hesitate to reach out to me if you find any issue with the code or if you have any questions. 
 * Personal email: hmartelb@hotmail.com
 * LinkedIn profile: https://www.linkedin.com/in/hmartelb/
 
 # License
+>[Table of contents](#table-of-contents)
+
 ```
 MIT License
 
