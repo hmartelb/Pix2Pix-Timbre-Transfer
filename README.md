@@ -181,7 +181,7 @@ Consequently, (2) has been chosen for being the one with less computational cost
 # Dataset
 >[Table of contents](#table-of-contents)
 
-Given the description of the problem, the dataset must contain the same audios played by different instruments. Unfortunately, this is very complex to achieve with human performances because of time alignment and note intensity differences, or even instrument tuning changes due to their physical construction. 
+Given the description of the problem, the dataset must contain the same audios played by different instruments. Unfortunately, this is very complex to achieve with human performances because of time alignment, note intensity differences, or even instrument tuning changes due to their physical construction. 
 
 For this reason, the audios of the dataset have been synthesized from MIDI files to obtain coherent and reliable data from different instruments. By doing this we ensure that the only change between two audios is the timbre, although this has its own limitations. 
 
@@ -206,7 +206,7 @@ The audios are generated from these 2 datasets by loading the notes from the MID
 <img src="docs/NoteSynthesizer_diagram.png" width="650" height="450">
 </p>
 
-The procedure has been done with all the MIDI files in (1) and with the following instruments from (2) in the preset 0:
+The procedure has been done with all the MIDI files in [Classical Music MIDI](https://www.kaggle.com/soumikrakshit/classical-music-midi) and with the following instruments from [The NSynth Dataset](https://magenta.tensorflow.org/datasets/nsynth) in the preset 0:
 * keyboard_acoustic
 * guitar_acoustic
 * string_acoustic
