@@ -167,12 +167,12 @@ mag_db = 20 * np.log1p(mag / amin)
 mag_db /= 20 * np.log1p(1 / amin) # Normalization
 ```
 
-Finally, the range is normalized to be within [-1,1] instead of [0,1] using the following conversion:
+Finally, the range is normalized in [-1,1] instead of [0,1] using the following conversion:
 ```python
 mag_db = mag_db * 2 - 1
 ```
 
-To recover the audio, the inverse operations must be performed. Denormalize to [0,1], convert from logarithmic to linear using the function ``db_to_amplitude()`` from ``data.py``, and then compute the inverse STFT using ``librosa.istft()`` using the magnitude and the phase estimations. The complex spectrogram and the final audio can be obtained from the magnitude and phase as: 
+To recover the audio, the inverse operations must be performed. Denormalize to [0,1], convert from logarithmic to linear using the function ``db_to_amplitude()`` from ``data.py``, and then compute the inverse STFT using ``librosa.istft()`` with the magnitude and the phase estimations. The complex spectrogram and the final audio can be obtained from the magnitude and phase as: 
 ```python
 S = mag * np.exp(1j * phase)
 audio = librosa.istft(S,...)
@@ -188,9 +188,9 @@ After some inconclusive experiments setting the batch size to 1, 2 and 4, the be
 
 ### Learning rate
 
-The learning rate has been searched using the Learning Rate Finder method mentioned in [this blog post from Towards Data Science](https://towardsdatascience.com/estimating-optimal-learning-rate-for-a-deep-neural-network-ce32f2556ce0). 
+The learning rate has been searched using the Learning Rate Finder method mentioned in [this blog post from Towards Data Science](https://towardsdatascience.com/estimating-optimal-learning-rate-for-a-deep-neural-network-ce32f2556ce0) and [this paper](https://arxiv.org/pdf/1506.01186.pdf). 
 
-The search was performed separately for the generator, the discriminator and the joint adversarial system. The best learning rate is not the lowest loss, but the one with the steepest slope. This example shows the results for keyboard_acoustic_2_string_acoustic: 
+The search was performed separately for the generator, the discriminator and the joint adversarial system. The best learning rate is not the lowest loss, but the one with the steepest slope. This example shows the results for keyboard_acoustic_2_guitar_acoustic: 
 
 <img src="docs/LRFinder_gen_mae.png" width="250" height="250"> | <img src="docs/LRFinder_disc_loss.png" width="250" height="250"> | <img src="docs/LRFinder_gen_loss.png" width="250" height="250"> 
 --- | --- | --- 
@@ -218,13 +218,13 @@ Generator MAE | Discriminator loss | Joint GAN loss
 <img src="docs/LRFinder_gen_mae.png" width="250" height="250"> | <img src="docs/LRFinder_disc_loss.png" width="250" height="250"> | <img src="docs/LRFinder_gen_loss.png" width="250" height="250"> 
 --- | --- | --- 
 Generator MAE | Discriminator loss | Joint GAN loss
-(best = ) | (best = )  | (best = ) 
+(best = 0.0553) | (best = 0.6853)  | (best = 6.4461) 
 
 #### keyboard_acoustic_2_synth_lead_synthetic
 <img src="docs/LRFinder_gen_mae.png" width="250" height="250"> | <img src="docs/LRFinder_disc_loss.png" width="250" height="250"> | <img src="docs/LRFinder_gen_loss.png" width="250" height="250"> 
 --- | --- | --- 
 Generator MAE | Discriminator loss | Joint GAN loss
-(best = ) | (best = )  | (best = ) 
+(best = 0.0222) | (best = 1.3097)  | (best = 2.9503) 
 
 # Results
 
@@ -234,9 +234,9 @@ Generator MAE | Discriminator loss | Joint GAN loss
 
 ### Trained models
 
-The weights of the trained models can be found in the /models folder of this repository in separate directories for each instrument pair. The training history and the learning rate search results can be found in the same path.
+The weights of the trained models can be found in the ``/models`` folder of this repository in separate directories for each instrument pair. The training history and the learning rate search results can be found in the same path.
 
-To use a pretrained model simply run the predict.py script specifying the path to the trained model, the location of the input audio and the name of the output audio.
+To use a pretrained model simply run the ``predict.py`` script specifying the path to the trained model, the location of the input audio and the name of the output audio.
 ```
 $ python predict.py --model <GENERATOR_WEIGHTS> 
                      --input <INPUT_AUDIO>
@@ -279,4 +279,26 @@ Please do not hesitate to reach out to me if you find any issue with the code or
 * LinkedIn profile: https://www.linkedin.com/in/hmartelb/
 
 # License
-https://creativecommons.org/licenses/by-nc/4.0/
+```
+MIT License
+
+Copyright (c) 2019 Héctor Martel
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
