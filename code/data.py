@@ -1,9 +1,12 @@
-import tensorflow as tf
-import numpy as np
 import os
-import librosa
 
 import matplotlib.pyplot as plt
+import numpy as np
+
+import librosa
+import tensorflow as tf
+from config import DEFAULT_SAMPLING_RATE
+
 
 def init_directory(directory):
     if(not os.path.isdir(directory)):
@@ -76,10 +79,10 @@ def inverse_transform(mag, phase, nfft=1024, normalize=True, crop_hf=True):
     audio = librosa.istft(R, hop_length=int(nfft/2), window=window)
     return audio
 
-def load_audio(filename, sr=44100):
+def load_audio(filename, sr=DEFAULT_SAMPLING_RATE):
     return librosa.core.load(filename, sr=sr)[0]
 
-def write_audio(filename, audio, sr=44100):
+def write_audio(filename, audio, sr=DEFAULT_SAMPLING_RATE):
     librosa.output.write_wav(filename, audio, sr, norm=True)
 
 class DataGenerator(tf.keras.utils.Sequence):
@@ -130,7 +133,6 @@ class DataGenerator(tf.keras.utils.Sequence):
             if(self.scale_factor != 1):
                 x[i,] *= self.scale_factor
                 y[i,] *= self.scale_factor
-            
             # Now images should be scaled in the range [0,1]. Make them [-1,1]
             x[i,] = x[i,] * 2 - 1
             y[i,] = y[i,] * 2 - 1
@@ -156,20 +158,4 @@ class DataGenerator(tf.keras.utils.Sequence):
     def on_epoch_end(self):
         'Updates indexes after each epoch'
         if self.shuffle:
-            np.random.shuffle(self.filenames)
-
-if __name__ == "__main__":
-    instrument = 'keyboard_acoustic'
-    audio = load_audio(os.path.join('..','data','audios',instrument+'.wav'))
-    print(audio.shape)
-
-    mag, phase = forward_transform(audio)
-    mag = amplitude_to_db(mag)
-    print('mag', mag.shape, np.max(np.abs(mag)), np.min(np.abs(mag)))
-    print('phase', phase.shape)
-
-    plt.imsave(os.path.join('..','data','audios',instrument+'.png'), np.flip(mag[0:256,0:256], axis=0))
-
-    # mag = db_to_amplitude(mag)
-    # recovered = inverse_transform(mag, phase)
-    # write_audio(os.path.join('..','data','audios','synth_lead_synthetic_recovered.wav'), recovered)
+            np.random.shuffle(self.filenames)        

@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 from config import (CHECKPOINT_DIR, DATASET_PATH, IMG_DIM, OUTPUT_PATH,
                     TEST_AUDIOS_PATH)
@@ -152,20 +151,23 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
     generator_optimizer = tf.keras.optimizers.Adam(gen_lr)
     discriminator_optimizer = tf.keras.optimizers.Adam(disc_lr)
 
-    model_name = data['training'].origin+'_2_'+data['training'].target#+'_tl30'
-    checkpoint_prefix = os.path.join(CHECKPOINT_DIR, model_name) # +datetime.now().strftime("%Y%m%d-%H%M")
+    model_name = data['training'].origin+'_2_'+data['training'].target
+    checkpoint_prefix = os.path.join(CHECKPOINT_DIR, model_name)
+    
+    generator_weights = os.path.join(checkpoint_prefix, 'generator.h5')
+    discriminator_weights = os.path.join(checkpoint_prefix, 'discriminator.h5')
+    
     if(not os.path.isdir(checkpoint_prefix)):
         os.makedirs(checkpoint_prefix)
     else:
-        if(os.path.isfile(os.path.join(checkpoint_prefix, 'generator.h5'))):
-            generator.load_weights(os.path.join(checkpoint_prefix, 'generator.h5'), by_name=True)
-            print('Generator weights restorred from ' + checkpoint_prefix)
+        if(os.path.isfile(generator_weights)):
+            generator.load_weights(generator_weights, by_name=True)
+            print('Generator weights restorred from ' + generator_weights)
 
-        if(os.path.isfile(os.path.join(checkpoint_prefix, 'discriminator.h5'))):
-            discriminator.load_weights(os.path.join(checkpoint_prefix, 'discriminator.h5'), by_name=True)
-            print('Discriminator weights restorred from ' + checkpoint_prefix)
+        if(os.path.isfile(discriminator_weights)):
+            discriminator.load_weights(discriminator_weights, by_name=True)
+            print('Discriminator weights restorred from ' + discriminator_weights)
 
-    # Get the number of batches in the training set
     epoch_size = data['training'].__len__()
 
     print()
@@ -194,6 +196,7 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
     gen_mae_list, gen_mae_val_list  = [], []
     gen_loss_list, gen_loss_val_list  = [], []
     disc_loss_list, disc_loss_val_list  = [], []
+    
     for epoch in range(epochs):
         gen_mae_total, gen_mae_val_total = 0, 0
         gen_loss_total, gen_loss_val_total = 0, 0
@@ -207,21 +210,25 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
             with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
                 # Generate a fake image
                 gen_output = generator(input_image, training=True)
+                
                 # Train the discriminator
                 disc_real_output = discriminator([input_image, target], training=True)
                 disc_generated_output = discriminator([input_image, gen_output], training=True)
+                
                 # Compute the losses
                 gen_mae = tf.reduce_mean(tf.abs(target - gen_output))
                 gen_loss = generator_loss(disc_generated_output, gen_mae)
                 disc_loss = discriminator_loss(disc_real_output, disc_generated_output)
+                
                 # Compute the gradients
                 generator_gradients = gen_tape.gradient(gen_loss,generator.trainable_variables)
                 discriminator_gradients = disc_tape.gradient(disc_loss, discriminator.trainable_variables)
+                
                 # Apply the gradients
                 generator_optimizer.apply_gradients(zip(generator_gradients, generator.trainable_variables))
                 discriminator_optimizer.apply_gradients(zip(discriminator_gradients, discriminator.trainable_variables))
 
-                # Update the progress bar
+                # Update the progress bar and the totals
                 gen_mae = gen_mae.numpy()
                 gen_loss = gen_loss.numpy()
                 disc_loss = disc_loss.numpy()
@@ -230,8 +237,13 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
                 gen_loss_total += gen_loss
                 disc_loss_total += disc_loss
 
-                progbar.add(1, values=[("gen_mae", gen_mae), ("gen_loss", gen_loss), ("disc_loss", disc_loss)])
-
+                progbar.add(1, values=[
+                                        ("gen_mae", gen_mae), 
+                                        ("gen_loss", gen_loss), 
+                                        ("disc_loss", disc_loss)
+                                    ])
+        
+        # Write training history 
         gen_mae_list.append(gen_mae_total/epoch_size)
         gen_mae_val_list.append(gen_mae_val_total/epoch_size)
         gen_loss_list.append(gen_loss_total/epoch_size)
@@ -249,10 +261,10 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
                                 })
         write_csv(history, os.path.join(checkpoint_prefix, 'history.csv'))
 
+        # Generate audios and save spectrograms for the entire audios
         epoch_output = os.path.join(OUTPUT_PATH, model_name, str((epoch+1)+epoch_offset).zfill(3))
         init_directory(epoch_output)
 
-        # Generate audios and save spectrograms for the entire audios
         prediction = generator(test_input, training=False)
         prediction = (prediction + 1) / 2
         generate_images(prediction, (test_input + 1) / 2, (test_target + 1) / 2, os.path.join(epoch_output, 'spectrogram'))
@@ -260,8 +272,8 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
         print('Epoch outputs saved in ' + epoch_output)
 
         # Save the weights
-        generator.save_weights(os.path.join(checkpoint_prefix, 'generator.h5'))
-        discriminator.save_weights(os.path.join(checkpoint_prefix, 'discriminator.h5'))
+        generator.save_weights(generator_weights)
+        discriminator.save_weights(discriminator_weights)
         print('Weights saved in ' + checkpoint_prefix)
 
         # Callback at the end of the epoch for the DataGenerator
@@ -270,32 +282,29 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
+    ap.add_argument('--dataset_path', required=True)
+    ap.add_argument('--origin', required=True)
+    ap.add_argument('--target', required=True)
     ap.add_argument('--gpu', required=False, default='0')
     ap.add_argument('--epochs', required=False, default=100)
     ap.add_argument('--epoch_offset', required=False, default=0)
     ap.add_argument('--batch_size', required=False, default=1)
     ap.add_argument('--gen_lr', required=False, default=5e-6)
-    ap.add_argument('--gen_init', required=False, default=0)
     ap.add_argument('--disc_lr', required=False, default=5e-7)
-    ap.add_argument('--base_path', required=False, default=DATASET_PATH)
-    ap.add_argument('--origin', required=False, default='keyboard_acoustic')
-    ap.add_argument('--target', required=False, default='guitar_acoustic')
     ap.add_argument('--validation_split', required=False, default=0.9)
     ap.add_argument('--findlr', required=False, default=False)
     args = ap.parse_args()
 
-    # Select which GPU to use and enable tf.foat16
+    # Select which GPU to use and enable mixed precision
     print('Using GPU: '+ args.gpu)
     os.environ["CUDA_DEVICE_ORDER"] = 'PCI_BUS_ID'
     os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
     os.environ['TF_ENABLE_AUTO_MIXED_PRECISION'] = '1'
 
-    # tf.keras.backend.set_floatx('float32')
-
     data = {
         'training': DataGenerator(origin=args.origin, 
                                 target=args.target,
-                                base_path=args.base_path,
+                                base_path=args.dataset_path,
                                 batch_size=int(args.batch_size),
                                 img_dim=IMG_DIM,
                                 validation_split=float(args.validation_split),
@@ -304,7 +313,7 @@ if __name__ == '__main__':
 
         'validation': DataGenerator(origin=args.origin, 
                                 target=args.target,
-                                base_path=args.base_path,
+                                base_path=args.dataset_path,
                                 batch_size=int(args.batch_size),
                                 img_dim=IMG_DIM,
                                 validation_split=float(args.validation_split),
@@ -315,4 +324,11 @@ if __name__ == '__main__':
     if(args.findlr):
         find_lr(data, int(args.batch_size))
     else:
-        train(data, int(args.epochs), int(args.batch_size), float(args.gen_lr), float(args.disc_lr), int(args.epoch_offset))
+        train(
+                data=data, 
+                epochs=int(args.epochs), 
+                batch_size=int(args.batch_size), 
+                gen_lr=float(args.gen_lr), 
+                disc_lr=float(args.disc_lr), 
+                epoch_offset=int(args.epoch_offset)
+            )

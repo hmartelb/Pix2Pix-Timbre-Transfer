@@ -25,9 +25,9 @@ def predict(model, input_filename, output_filename):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument('--model', required=False, default=os.path.join(CHECKPOINT_DIR, 'keyboard_acoustic_2_guitar_acoustic', 'generator.h5'))
+    ap.add_argument('--model', required=True)
     ap.add_argument('--input', required=True)
-    ap.add_argument('--output', required=False, default=os.path.join(OUTPUT_PATH, 'keyboard_acoustic_2_guitar_acoustic'))
+    ap.add_argument('--output', required=True)
     ap.add_argument('--gpu', required=False, default='0')
     args = ap.parse_args()
 
