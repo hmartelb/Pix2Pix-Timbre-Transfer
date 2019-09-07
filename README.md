@@ -270,7 +270,7 @@ The training history is displayed below for the 100 training epochs, using all t
 <img src="docs/training/keyboard_acoustic_2_guitar_acoustic/gen_mae_history.png" width="250" height="250"> | <img src="docs/training/keyboard_acoustic_2_guitar_acoustic/disc_loss_history.png" width="250" height="250"> | <img src="docs/training/keyboard_acoustic_2_guitar_acoustic/gen_loss_history.png" width="250" height="250"> 
 --- | --- | --- 
 Generator MAE | Discriminator loss | Joint GAN loss
-(best = , last = ) | (best = , last = )  | (best = , last = ) 
+(best = 0.0192, last = 0.0192) | (best = 1.3131, last = 1.3708)  | (best = 2.6338, last = 2.6338) 
 
 #### keyboard_acoustic_2_string_acoustic
 <img src="docs/training/keyboard_acoustic_2_string_acoustic/gen_mae_history.png" width="250" height="250"> | <img src="docs/training/keyboard_acoustic_2_string_acoustic/disc_loss_history.png" width="250" height="250"> | <img src="docs/training/keyboard_acoustic_2_string_acoustic/gen_loss_history.png" width="250" height="250"> 
