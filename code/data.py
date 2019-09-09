@@ -1,12 +1,9 @@
+import tensorflow as tf
+import numpy as np
 import os
+import librosa
 
 import matplotlib.pyplot as plt
-import numpy as np
-
-import librosa
-import tensorflow as tf
-from config import DEFAULT_SAMPLING_RATE
-
 
 def init_directory(directory):
     if(not os.path.isdir(directory)):
@@ -79,10 +76,15 @@ def inverse_transform(mag, phase, nfft=1024, normalize=True, crop_hf=True):
     audio = librosa.istft(R, hop_length=int(nfft/2), window=window)
     return audio
 
-def load_audio(filename, sr=DEFAULT_SAMPLING_RATE):
+def snr(original, reconstruction):
+    signal_rms = np.sqrt(np.sum(original**2))
+    noise_rms = np.sqrt(np.sum((original - reconstruction)**2))
+    return 10.*np.log10(signal_rms/noise_rms)
+
+def load_audio(filename, sr=44100):
     return librosa.core.load(filename, sr=sr)[0]
 
-def write_audio(filename, audio, sr=DEFAULT_SAMPLING_RATE):
+def write_audio(filename, audio, sr=44100):
     librosa.output.write_wav(filename, audio, sr, norm=True)
 
 class DataGenerator(tf.keras.utils.Sequence):
@@ -133,6 +135,7 @@ class DataGenerator(tf.keras.utils.Sequence):
             if(self.scale_factor != 1):
                 x[i,] *= self.scale_factor
                 y[i,] *= self.scale_factor
+            
             # Now images should be scaled in the range [0,1]. Make them [-1,1]
             x[i,] = x[i,] * 2 - 1
             y[i,] = y[i,] * 2 - 1
@@ -158,4 +161,97 @@ class DataGenerator(tf.keras.utils.Sequence):
     def on_epoch_end(self):
         'Updates indexes after each epoch'
         if self.shuffle:
-            np.random.shuffle(self.filenames)        
+            np.random.shuffle(self.filenames)
+
+class DataGeneratorMultiTarget(tf.keras.utils.Sequence):
+    def __init__(self, origin, target, base_path, batch_size=1, img_dim=(256,256,1), validation_split=0.9, is_training=True, scale_factor=1.0, shuffle=True):
+        self.img_dim = img_dim
+        self.batch_size = batch_size
+        
+        self.validation_split = validation_split
+        self.is_training = is_training
+        self.scale_factor = scale_factor
+
+        self.base_path = base_path if(type(base_path) is list) else [base_path]
+
+        self.origin = origin
+        self.target = target
+        self.filenames = self.__get_filenames()
+        assert len(self.filenames) > 0, 'Filenames is empty' 
+
+        self.shuffle = shuffle
+        self.on_epoch_end()
+
+    def __len__(self):
+        'Denotes the number of batches per epoch'
+        return int(np.floor(len(self.filenames) / self.batch_size))
+
+    def __getitem__(self, index):
+        'Generate one batch of data'        
+        filenames = self.filenames[index*self.batch_size:(index+1)*self.batch_size]                 # Generate indexes of the batch
+        batch = self.__data_generation(filenames)                      # Generate data
+        return batch
+
+    def get_empty_batch(self):
+        x = np.zeros((self.batch_size, self.img_dim[0], self.img_dim[1], 2))
+        y = np.zeros((self.batch_size, *self.img_dim))
+        return x,y 
+
+    def get_random_batch(self):
+        random_idx = np.random.randint(self.__len__())
+        return self.__getitem__(random_idx)
+
+    def __data_generation(self, filenames):
+        'Generates data containing batch_size samples'                                  
+        x = np.empty((self.batch_size, self.img_dim[0], self.img_dim[1], 2))
+        y = np.empty((self.batch_size, *self.img_dim))
+        # Generate data
+        for i, filename in enumerate(filenames):
+            style = np.random.choice(self.filenames)['name']
+            x[i,:,:,0:1] = np.load(filename['name'])
+            x[i,:,:,1:2] = np.load(style.replace(self.origin, filename['target']))
+            y[i,] = np.load(filename['name'].replace(self.origin, filename['target'])) 
+            if(self.scale_factor != 1):
+                x[i,] *= self.scale_factor
+                y[i,] *= self.scale_factor
+            # Now images should be scaled in the range [0,1]. Make them [-1,1]
+            x[i,] = x[i,] * 2 - 1
+            y[i,] = y[i,] * 2 - 1
+        return x,y
+
+    def __get_filenames(self):
+        origin_filenames = []
+        for base_path in self.base_path:
+            origin_temp = [os.path.join(base_path, self.origin, f) for f in os.listdir(os.path.join(base_path, self.origin))]
+            if(self.is_training):
+                origin_temp = origin_temp[0:int(self.validation_split*len(origin_temp))]
+            else:
+                origin_temp = origin_temp[int(self.validation_split*len(origin_temp)):]
+            origin_filenames += origin_temp
+        
+        filenames = []
+        for f in origin_filenames:
+            for t in self.target:
+                filenames.append({'name': f, 'target': t})     
+        return filenames
+
+    def on_epoch_end(self):
+        'Updates indexes after each epoch'
+        if self.shuffle:
+            np.random.shuffle(self.filenames)
+
+if __name__ == "__main__":
+    instrument = 'keyboard_acoustic'
+    audio = load_audio(os.path.join('..','data','audios',instrument+'.wav'))
+    print(audio.shape)
+
+    mag, phase = forward_transform(audio)
+    mag = amplitude_to_db(mag)
+    print('mag', mag.shape, np.max(np.abs(mag)), np.min(np.abs(mag)))
+    print('phase', phase.shape)
+
+    plt.imsave(os.path.join('..','data','audios',instrument+'.png'), np.flip(mag[0:256,0:256], axis=0))
+
+    # mag = db_to_amplitude(mag)
+    # recovered = inverse_transform(mag, phase)
+    # write_audio(os.path.join('..','data','audios','synth_lead_synthetic_recovered.wav'), recovered)
