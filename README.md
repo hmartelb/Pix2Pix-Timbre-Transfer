@@ -160,9 +160,17 @@ The Pix2Pix architecture has been designed for image processing tasks, but in th
 
 Audio applications using Machine Learning typically work better in Frequency domain than in Time domain. If an appropriate time-frequency transform, like the Short Time Fourier Transform (STFT) is applied to the time domain signal, the result is a 2D representation called a Spectrogram where the axes correspond to time (horizontal) and frequency (vertical).  
 
-<img src="docs/keyboard_acoustic_plot_0_10000.png" width="256" height="256"> | <img src="docs/examples/keyboard_acoustic.png" width="200" height="200"> 
+<!-- <img src="docs/keyboard_acoustic_plot_0_10000.png" width="256" height="256"> | <img src="docs/examples/keyboard_acoustic.png" width="200" height="200"> 
 --- | --- 
-Time domain (Waveform) | Frequency domain (Spectrogram, STFT)
+Time domain (Waveform) | Frequency domain (Spectrogram, STFT) -->
+<p align="center">
+<img src="docs/keyboard_acoustic_waveform_and_spectrogram.png" width="960" height="343">
+</p>
+<p align="center">
+Example of the Keyboard visualized in Adobe Audition.
+<br>
+Top: Time domain (Waveform), Bottom: Frequency domain (Spectrogram, STFT)
+</p>
 
 The spectrograms are computed from the audios using the ``librosa.stft()`` function with a Hanning window of size 1024 and an overlap of 50% (hop size of 512), which gives a resolution of 513 frequency bins. The Sampling Rate of the input audio is 44.1kHz. These parameters have been found to provide a reasonable time-frequency compromise for this application. 
 
@@ -175,6 +183,11 @@ Strictly speaking, the values of the Spectrogram returned by the STFT operation 
 The component that carries the most relevant information is the magnitude, and it is the only one passed to the network, as shown in this diagram:
 <p align="center">
 <img src="docs/Pix2Pix Timbre Transfer.png" width="960" height="391">
+</p>
+<p align="center">
+Diagram of the end-to-end audio processing pipeline. 
+<br>
+The STFT and iSTFT correspond to the forward and inverse Short Time Fourier Transforms respectively. The magnitude is processed at the Pix2Pix block, which returns a magnitude estimation as output. The phase is processed at the Phase estimator block, with one of the implementations discussed below.   
 </p>
 
 ### Reconstructing the audio
@@ -222,6 +235,9 @@ The MAESTRO Dataset contains more than 200 hours of music in MIDI format and can
 The audios are generated from these 2 datasets by loading the notes from the MIDI file as a sequence of (pitch, velocity, start_time, end_time). Then, the corresponding note from the NSynth dataset is loaded, modified to the note duration, and placed into an audio file. After repeating these two steps for all the notes in the sequence, the piece from the MIDI file is synthesized as illustrated in this diagram:
 <p align="center">
 <img src="docs/NoteSynthesizer_diagram.png" width="650" height="450">
+</p>
+<p align="center">
+Audio synthesizer block diagram. The notes from the MIDI file and the notes from NSynth are combined into a synthesized output audio. 
 </p>
 
 The procedure has been done with all the MIDI files in [Classical Music MIDI](https://www.kaggle.com/soumikrakshit/classical-music-midi) and with the following instruments from [The NSynth Dataset](https://magenta.tensorflow.org/datasets/nsynth) in the preset 0:
