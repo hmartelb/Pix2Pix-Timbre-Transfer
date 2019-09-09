@@ -188,8 +188,9 @@ The spectrograms are computed from the audios using the ``librosa.stft()`` funct
 
 Strictly speaking, the values of the Spectrogram returned by the STFT operation are complex numbers. Therefore, for the network to process the data it needs to be decomposed further. The magnitude of the signal is the modulus of Spectrogram, namely ``np.abs(S)`` and the phase of the signal is the angle, obtained as ``np.angle(S)``. 
 
-### Pix2Pix (fixed instrument pair)
-The component that carries the most relevant information is the magnitude, and it is the only one passed to the network, as shown in this diagram:
+The component that carries the most relevant information is the magnitude, and it is the only one passed to the network, as shown in the following diagrams:
+
+#### Fixed instrument pair
 <p align="center">
 <img src="docs/Pix2Pix Timbre Transfer.png" width="960" height="391">
 </p>
@@ -199,9 +200,9 @@ Diagram of the end-to-end audio processing pipeline for a fixed instrument pair.
 The STFT and iSTFT correspond to the forward and inverse Short Time Fourier Transforms respectively. The magnitude is processed at the Pix2Pix block, which returns a magnitude estimation as output. The phase is processed at the Phase estimator block, with one of the implementations <a href="#reconstructing-the-audio">discussed below</a>.   
 </p>
 
-### Pix2Pix (Multitarget)
+#### Multitarget
 <p align="center">
-<img src="docs/Pix2Pix Timbre Transfer Multitarget.png" width="960" height="391">
+<img src="docs/Pix2Pix Timbre Transfer Multitarget.png" width="960" height="552">
 </p>
 <p align="center">
 Diagram of the end-to-end audio processing pipeline for the conditioned multitarget model. 
