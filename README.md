@@ -350,6 +350,13 @@ At the end of every training epoch the same audio file has been used to generate
 
 ### Visualizations
 
+#### keyboard_acoustic_2_any
+| <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_input.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/prediction.gif" width="340" height="256"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_true.png" width="200" height="200"> |
+| --- | --- | --- |
+| <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_input.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/prediction.gif" width="340" height="256"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_true.png" width="200" height="200"> |
+| <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_input.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/prediction.gif" width="340" height="256"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_true.png" width="200" height="200"> |
+Input spectrogram | Prediction over 100 epochs | True target
+
 #### keyboard_acoustic_2_guitar_acoustic
 <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_input.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/prediction.gif" width="340" height="256"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_true.png" width="200" height="200"> 
 --- | --- | ---
@@ -367,11 +374,19 @@ Input spectrogram | Prediction over 100 epochs | True target
 
 ### Audios
 
+#### keyboard_acoustic_2_any
+
+| Input | Prediction 1 | Target 1 | Prediction 2 | Target 2 | Prediction 3 | Target 3 |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Sample 1]() | [Sample 1]() | [Sample 1]() | [Sample 1]() | [Sample 1]() | [Sample 1]() | [Sample 1]() |
+| [Sample 2]() | [Sample 2]() | [Sample 2]() | [Sample 2]() | [Sample 2]() | [Sample 2]() | [Sample 2]() |
+| [Sample 3]() | [Sample 3]() | [Sample 3]() | [Sample 3]() | [Sample 3]() | [Sample 3]() | [Sample 3]() |
+
 #### keyboard_acoustic_2_guitar_acoustic
 
 | Input | Prediction | Target |
 | --- | --- | --- |
-[Sample 1](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | [Sample 1]() | [Sample 1](https://drive.google.com/open?id=1hGWHfV03yok2NSfXipK7KDVp9kTbUbjH) 
+| [Sample 1](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | [Sample 1]() | [Sample 1](https://drive.google.com/open?id=1hGWHfV03yok2NSfXipK7KDVp9kTbUbjH)|
 | [Sample 2]() | [Sample 2]() | [Sample 2]() |
 | [Sample 3]() | [Sample 3]() | [Sample 3]() |
 
@@ -387,7 +402,7 @@ Input spectrogram | Prediction over 100 epochs | True target
 
 | Input | Prediction | Target |
 | --- | --- | --- |
-[Sample 1](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | [Sample 1](https://drive.google.com/open?id=12exCypMTuDLVe_t6aEMq2gBXMFN46Xl1) | [Sample 1](https://drive.google.com/open?id=1VKfm4iGLnDPLn3BZ14yAcv5wFA6-bMms) 
+| [Sample 1](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | [Sample 1](https://drive.google.com/open?id=12exCypMTuDLVe_t6aEMq2gBXMFN46Xl1) | [Sample 1](https://drive.google.com/open?id=1VKfm4iGLnDPLn3BZ14yAcv5wFA6-bMms) |
 | [Sample 2]() | [Sample 2]() | [Sample 2]() |
 | [Sample 3]() | [Sample 3]() | [Sample 3]() |
 
