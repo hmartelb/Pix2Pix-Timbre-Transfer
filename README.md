@@ -150,7 +150,10 @@ Time domain (Waveform) | Frequency domain (Spectrogram, STFT) -->
 <img src="docs/keyboard_acoustic_waveform_and_spectrogram.png" width="960" height="343">
 </p>
 <p align="center">
-Example of the Keyboard visualized in Adobe Audition. Top: Time domain (Waveform), Bottom: Frequency domain (Spectrogram, STFT)
+Example of the Keyboard visualized in Adobe Audition.
+</p>
+<p align="center">
+Top: Time domain (Waveform), Bottom: Frequency domain (Spectrogram, STFT)
 </p>
 
 The spectrograms are computed from the audios using the ``librosa.stft()`` function with a Hanning window of size 1024 and an overlap of 50% (hop size of 512), which gives a resolution of 513 frequency bins. The Sampling Rate of the input audio is 44.1kHz. These parameters have been found to provide a reasonable time-frequency compromise for this application. 
