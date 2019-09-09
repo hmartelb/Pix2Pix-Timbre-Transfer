@@ -147,7 +147,7 @@ Audio applications using Machine Learning typically work better in Frequency dom
 --- | --- 
 Time domain (Waveform) | Frequency domain (Spectrogram, STFT) -->
 <p align="center">
-<img src="docs/keyboard_acoustic_waveform_and_spectrogram.png" width="1235" height="442">
+<img src="docs/keyboard_acoustic_waveform_and_spectrogram.png" width="960" height="343">
 </p>
 
 The spectrograms are computed from the audios using the ``librosa.stft()`` function with a Hanning window of size 1024 and an overlap of 50% (hop size of 512), which gives a resolution of 513 frequency bins. The Sampling Rate of the input audio is 44.1kHz. These parameters have been found to provide a reasonable time-frequency compromise for this application. 
