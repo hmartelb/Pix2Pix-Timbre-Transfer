@@ -147,8 +147,16 @@ Individual models
 To use a pretrained model simply run the ``predict.py`` script specifying the path to the trained model, the location of the input audio and the name of the output audio.
 ```
 $ python predict.py --model <GENERATOR_WEIGHTS> 
-                     --input <INPUT_AUDIO>
-                     --output <OUTPUT_AUDIO>
+                    --input <INPUT_AUDIO>
+                    --output <OUTPUT_AUDIO>
+```
+
+Additionally, in the case of a multitarget model the style must be specified. Run the ``predict_multitarget.py`` script instead.
+```
+$ python predict_multitarget.py --model <GENERATOR_WEIGHTS> 
+                                --input <INPUT_AUDIO>
+                                --style <TARGET_STYLE_AUDIO>
+                                --output <OUTPUT_AUDIO>
 ```
 
 # Methodology
@@ -383,16 +391,16 @@ Individual models
 To use a pretrained model simply run the ``predict.py`` script specifying the path to the trained model, the location of the input audio and the name of the output audio.
 ```
 $ python predict.py --model <GENERATOR_WEIGHTS> 
-                     --input <INPUT_AUDIO>
-                     --output <OUTPUT_AUDIO>
+                    --input <INPUT_AUDIO>
+                    --output <OUTPUT_AUDIO>
 ```
 
 Additionally, in the case of a multitarget model the style must be specified. Run the ``predict_multitarget.py`` script instead.
 ```
 $ python predict_multitarget.py --model <GENERATOR_WEIGHTS> 
-                     --input <INPUT_AUDIO>
-                     --style <TARGET_STYLE_AUDIO>
-                     --output <OUTPUT_AUDIO>
+                                --input <INPUT_AUDIO>
+                                --style <TARGET_STYLE_AUDIO>
+                                --output <OUTPUT_AUDIO>
 ```
 
 # Conclusion 
