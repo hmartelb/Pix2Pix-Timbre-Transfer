@@ -374,9 +374,11 @@ Input | Prediction | Target
 [Sample 1](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | 
 [Sample 1]() |
 [Sample 1](https://drive.google.com/open?id=1hGWHfV03yok2NSfXipK7KDVp9kTbUbjH) 
+--- | --- | --- 
 [Sample 2]() | 
 [Sample 2]() | 
 [Sample 2]()
+--- | --- | --- 
 [Sample 3]() | 
 [Sample 3]() | 
 [Sample 3]()
