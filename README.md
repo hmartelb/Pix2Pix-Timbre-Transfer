@@ -387,15 +387,9 @@ Input | Prediction | Target
 
 | Input | Prediction | Target |
 | --- | --- | --- |
-| [Sample 1](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | 
-[Sample 1](https://drive.google.com/open?id=1HovCh4rNnPemSeQLVfdCdudaxFxY4mOt) |
-[Sample 1](https://drive.google.com/open?id=1mpaovd5T2IaXee2CyOWrUXEXRHg64LeB) |
-| [Sample 2]() | 
-[Sample 2]() | 
-[Sample 2]() |
-| [Sample 3]() | 
-[Sample 3]() | 
-[Sample 3]() |
+| [Sample 1](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | [Sample 1](https://drive.google.com/open?id=1HovCh4rNnPemSeQLVfdCdudaxFxY4mOt) | [Sample 1](https://drive.google.com/open?id=1mpaovd5T2IaXee2CyOWrUXEXRHg64LeB) |
+| [Sample 2]() | [Sample 2]() | [Sample 2]() |
+| [Sample 3]() | [Sample 3]() | [Sample 3]() |
 
 #### keyboard_acoustic_2_synth_lead_synthetic
 
