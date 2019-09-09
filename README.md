@@ -106,15 +106,15 @@ $ python train.py --dataset_path <DATASET_PATH>
 The ``train_multitarget.py`` script allows for multitarget training instead of a fixed instrument pair. This means that the same origin can be conditioned to obtain a different target by having an additional input. To use it, specify the origin, a list of targets, and the path where the dataset is located. 
 ```
 $ python train_multitarget.py --dataset_path <DATASET_PATH> 
-                            --origin <ORIGIN>
-                            --target <LIST_OF_TARGETS>
-                           [--gpu <GPU>] 
-                           [--epochs <EPOCHS>]
-                           [--epoch_offset <EPOCH_OFFSET>] 
-                           [--batch_size <BATCH_SIZE>]
-                           [--lr <LEARNING_RATE>] 
-                           [--validation_split <VALIDATION_SPLIT>] 
-                           [--findlr <FINDLR>]
+                              --origin <ORIGIN>
+                              --target <LIST_OF_TARGETS>
+                             [--gpu <GPU>] 
+                             [--epochs <EPOCHS>]
+                             [--epoch_offset <EPOCH_OFFSET>] 
+                             [--batch_size <BATCH_SIZE>]
+                             [--lr <LEARNING_RATE>] 
+                             [--validation_split <VALIDATION_SPLIT>] 
+                             [--findlr <FINDLR>]
 ```
 
 ### Generator only training
@@ -139,7 +139,7 @@ The ``/models`` folder of this repository contains the training history and the 
 Since the weights of the trained models are too large for the Github repository, [this alternative link to Google Drive](https://drive.google.com/open?id=1baKYIA3uurrXkh1V0-fMWkgvW4iEWJh8) is provided. 
 
 Individual models
-* [keyboard_acousitc_2_any]()
+* [keyboard_acousitc_2_any](https://drive.google.com/open?id=15qzaeFJ_vpRqPR_kevyOLIKobWQ6xhqC)
 * [keyboard_acoustic_2_guitar_acoustic](https://drive.google.com/open?id=1wD9jHDkwMSaPQeCpM6UxnOQfh-C52pI0) 
 * [keyboard_acoustic_2_string_acoustic](https://drive.google.com/open?id=1TUMI0NK9hP26BqiQUAqNa7woHJ23JoME)
 * [keyboard_acoustic_2_synth_lead_synthetic](https://drive.google.com/open?id=1LuriwjzxN3C5SJzeDFZllEOMtjZcUDYf)
@@ -168,9 +168,6 @@ The Pix2Pix architecture has been designed for image processing tasks, but in th
 
 Audio applications using Machine Learning typically work better in Frequency domain than in Time domain. If an appropriate time-frequency transform, like the Short Time Fourier Transform (STFT) is applied to the time domain signal, the result is a 2D representation called a Spectrogram where the axes correspond to time (horizontal) and frequency (vertical).  
 
-<!-- <img src="docs/keyboard_acoustic_plot_0_10000.png" width="256" height="256"> | <img src="docs/examples/keyboard_acoustic.png" width="200" height="200"> 
---- | --- 
-Time domain (Waveform) | Frequency domain (Spectrogram, STFT) -->
 <p align="center">
 <img src="docs/keyboard_acoustic_waveform_and_spectrogram.png" width="960" height="343">
 </p>
@@ -190,7 +187,9 @@ Strictly speaking, the values of the Spectrogram returned by the STFT operation 
 
 The component that carries the most relevant information is the magnitude, and it is the only one passed to the network, as shown in the following diagrams:
 
-#### Fixed instrument pair
+### Fixed instrument pair
+The network performs the timbre transfer operation in a fixed instrument pair setting. The task is to learn the differences between a given origin and target and apply it to the input to generate the prediction. This means that the origin and target instruments are always expected to be the same and the input audio is converted from origin to target. 
+
 <p align="center">
 <img src="docs/Pix2Pix Timbre Transfer.png" width="960" height="391">
 </p>
@@ -200,7 +199,9 @@ Diagram of the end-to-end audio processing pipeline for a fixed instrument pair.
 The STFT and iSTFT correspond to the forward and inverse Short Time Fourier Transforms respectively. The magnitude is processed at the Pix2Pix block, which returns a magnitude estimation as output. The phase is processed at the Phase estimator block, with one of the implementations <a href="#reconstructing-the-audio">discussed below</a>.   
 </p>
 
-#### Multitarget
+### Multitarget
+The proposed setting is similar to the neural style transfer problem. Instead of having a fixed transformation, the network is conditioned to generate any instrument of the user’s choice. This is achieved by passing random notes played by the target instrument as an additional input. The task is not just to perform a predetermined transformation, but to analyze input and target simultaneously to generate the prediction. 
+
 <p align="center">
 <img src="docs/Pix2Pix Timbre Transfer Multitarget.png" width="960" height="552">
 </p>
@@ -217,17 +218,18 @@ Both magnitude and phase are required to reconstruct the audio from a Spectrogra
 Generating flat or random phases does not produce a decent result. Therefore, a more sophisticated phase estimation method is also necessary. The following can be implemented in the “Phase estimator” block as possible solutions: 
 
 1. [Griffin-Lim algorithm](https://pdfs.semanticscholar.org/14bc/876fae55faf5669beb01667a4f3bd324a4f1.pdf)
-2. [Reconstruction using the input phase](https://posenhuang.github.io/papers/DRNN_ISMIR2014.pdf) (the phase estimator is the identity function)
+2. [Reconstruction using the input phase](https://posenhuang.github.io/papers/DRNN_ISMIR2014.pdf) (the phase estimator is the identity function, commonly used in audio source separation)
 3. Use another Pix2Pix network to learn the phase
 4. Pass magnitude and phase as 2 channels to a single Pix2Pix network
 
-Some authors from the research literature claim that (1) may not converge into an acceptable result for this particular problem [[i](https://arxiv.org/pdf/1811.09620.pdf) [ii](http://recherche.ircam.fr/pub/dafx11/Papers/27_e.pdf)], and any of the proposals in (3,4) are error prone since they will likely produce inconsistent spectrograms that are not invertible into a time-domain signal [iii](http://www.jonathanleroux.org/pdf/Gerkmann2015SPM03.pdf). 
+Some authors from the research literature claim that (1) may not converge into an acceptable result for this particular problem [i, ii], and any of the proposals in (3,4) are error prone since they will likely produce inconsistent spectrograms that are not invertible into a time-domain signal [ii, iii]. 
 
 Consequently, (2) has been chosen for being the one with less computational cost, less error prone, and best perceptual output quality.
 
-<!-- > References of this section
-> * i - [TimbreTron: A WaveNet(CycleGAN(CQT(Audio))) Pipeline for Musical Timbre Transfer]()
-> * ii - [Phase Processing for Single-Channel Speech Enhancement] -->
+> References of this section
+> * i - [TimbreTron: A WaveNet(CycleGAN(CQT(Audio))) Pipeline for Musical Timbre Transfer](https://arxiv.org/pdf/1811.09620.pdf)
+> * ii - [Signal Reconstruction from STFT magnitude: A state of the art](http://recherche.ircam.fr/pub/dafx11/Papers/27_e.pdf)
+> * iii - [Phase Processing for Single-Channel Speech Enhancement](http://www.jonathanleroux.org/pdf/Gerkmann2015SPM03.pdf)
 
 # Dataset
 >[Table of contents](#table-of-contents)
@@ -296,6 +298,7 @@ The adversarial networks have been trained in a single GTX 1080Ti GPU for 100 ep
 ### Batch size
 
 After some inconclusive experiments setting the batch size to 1, 2 and 4, the best convergence has been achieved using a batch size of 8. This gives a total of 2859 iterations per epoch.
+>In the case of the conditioned model the number of training examples is 68625, which gives 8578 iterations per epoch.
 
 ### Learning rate
 
@@ -366,27 +369,51 @@ Input spectrogram | Prediction over 100 epochs | True target
 
 #### keyboard_acoustic_2_guitar_acoustic
 
-[Keyboard acoustic](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | 
-[Guitar acoustic](https://drive.google.com/open?id=1hGWHfV03yok2NSfXipK7KDVp9kTbUbjH) | 
-[keyboard_acoustic_2_guitar_acoustic]()
+Input | Prediction | Target
 --- | --- | --- 
-Input | Target | Prediction
+[Sample 1](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | 
+[Sample 1]() |
+[Sample 1](https://drive.google.com/open?id=1hGWHfV03yok2NSfXipK7KDVp9kTbUbjH) 
+
+[Sample 2]() | 
+[Sample 2]() | 
+[Sample 2]()
+
+[Sample 3]() | 
+[Sample 3]() | 
+[Sample 3]()
 
 #### keyboard_acoustic_2_string_acoustic
 
-[Keyboard acoustic](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | 
-[String acoustic](https://drive.google.com/open?id=1mpaovd5T2IaXee2CyOWrUXEXRHg64LeB) | 
-[keyboard_acoustic_2_string_acoustic](https://drive.google.com/open?id=1HovCh4rNnPemSeQLVfdCdudaxFxY4mOt)
+Input | Prediction | Target
 --- | --- | --- 
-Input | Target | Prediction
+[Sample 1](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | 
+[Sample 1](https://drive.google.com/open?id=1HovCh4rNnPemSeQLVfdCdudaxFxY4mOt) |
+[Sample 1](https://drive.google.com/open?id=1mpaovd5T2IaXee2CyOWrUXEXRHg64LeB) 
+
+[Sample 2]() | 
+[Sample 2]() | 
+[Sample 2]()
+
+[Sample 3]() | 
+[Sample 3]() | 
+[Sample 3]()
 
 #### keyboard_acoustic_2_synth_lead_synthetic
 
-[Keyboard acoustic](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | 
-[Synth Lead synthetic](https://drive.google.com/open?id=1VKfm4iGLnDPLn3BZ14yAcv5wFA6-bMms) | 
-[keyboard_acoustic_2_synth_lead_synthetic](https://drive.google.com/open?id=12exCypMTuDLVe_t6aEMq2gBXMFN46Xl1)
+Input | Prediction | Target
 --- | --- | --- 
-Input | Target | Prediction
+[Sample 1](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | 
+[Sample 1](https://drive.google.com/open?id=12exCypMTuDLVe_t6aEMq2gBXMFN46Xl1) |
+[Sample 1](https://drive.google.com/open?id=1VKfm4iGLnDPLn3BZ14yAcv5wFA6-bMms)
+
+[Sample 2]() | 
+[Sample 2]() | 
+[Sample 2]()
+
+[Sample 3]() | 
+[Sample 3]() | 
+[Sample 3]()
 
 ### Trained models
 
@@ -395,7 +422,7 @@ The ``/models`` folder of this repository contains the training history and the 
 Since the weights of the trained models are too large for the Github repository, [this alternative link to Google Drive](https://drive.google.com/open?id=1baKYIA3uurrXkh1V0-fMWkgvW4iEWJh8) is provided. 
 
 Individual models
-* [keyboard_acousitc_2_any]()
+* [keyboard_acousitc_2_any](https://drive.google.com/open?id=15qzaeFJ_vpRqPR_kevyOLIKobWQ6xhqC)
 * [keyboard_acoustic_2_guitar_acoustic](https://drive.google.com/open?id=1wD9jHDkwMSaPQeCpM6UxnOQfh-C52pI0)
 * [keyboard_acoustic_2_string_acoustic](https://drive.google.com/open?id=1TUMI0NK9hP26BqiQUAqNa7woHJ23JoME)
 * [keyboard_acoustic_2_synth_lead_synthetic](https://drive.google.com/open?id=1LuriwjzxN3C5SJzeDFZllEOMtjZcUDYf)
@@ -438,8 +465,6 @@ Alternatively, consider using the MAESTRO Dataset as mentioned in the section [D
 ### Conditional architecture (any_2_any)
 
 The scope of this project has been limited to explore 3 instrument pairs, having only one pair fixed for each model. In other words, the model converts a specific origin into a specific target and cannot perform the timbre transfer operation properly if the origin or target instruments change. 
-
-The proposed setting is similar to the neural style transfer problem. To condition the network to generate any instrument of the user’s choice, random notes played by the target instrument can be passed as an additional input. The task would be not just to perform a predetermined transformation, but to analyze input and target simultaneously to generate the prediction. 
 
 # Acknowledgements
 >[Table of contents](#table-of-contents)
