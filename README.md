@@ -167,6 +167,11 @@ The component that carries the most relevant information is the magnitude, and i
 <p align="center">
 <img src="docs/Pix2Pix Timbre Transfer.png" width="960" height="391">
 </p>
+<p align="center">
+Diagram of the end-to-end audio processing pipeline. 
+<br>
+The STFT and iSTFT correspond to the forward and inverse Short Time Fourier Transforms respectively. The magnitude is processed at the Pix2Pix block, which returns a magnitude estimation as output. The phase is processed at the Phase estimator block, with one of the implementations discussed below.   
+</p>
 
 ### Reconstructing the audio
 
@@ -213,6 +218,9 @@ The MAESTRO Dataset contains more than 200 hours of music in MIDI format and can
 The audios are generated from these 2 datasets by loading the notes from the MIDI file as a sequence of (pitch, velocity, start_time, end_time). Then, the corresponding note from the NSynth dataset is loaded, modified to the note duration, and placed into an audio file. After repeating these two steps for all the notes in the sequence, the piece from the MIDI file is synthesized as illustrated in this diagram:
 <p align="center">
 <img src="docs/NoteSynthesizer_diagram.png" width="650" height="450">
+</p>
+<p align="center">
+Audio synthesizer block diagram. The notes from the MIDI file and the notes from NSynth are combined into a synthesized output audio. 
 </p>
 
 The procedure has been done with all the MIDI files in [Classical Music MIDI](https://www.kaggle.com/soumikrakshit/classical-music-midi) and with the following instruments from [The NSynth Dataset](https://magenta.tensorflow.org/datasets/nsynth) in the preset 0:
