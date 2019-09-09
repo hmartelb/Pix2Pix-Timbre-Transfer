@@ -103,7 +103,7 @@ $ python train.py --dataset_path <DATASET_PATH>
 ```
 
 ### Conditioned Pix2Pix training (multitarget)
-The ``train_multitarget.py`` script allows for multitarget training instead of a fixed instrument pair. This means that the same origin can be conditioned to obtain a different target by having an additional input. To use it, specifyi the origin, a list of targets, and the path where the dataset is located. 
+The ``train_multitarget.py`` script allows for multitarget training instead of a fixed instrument pair. This means that the same origin can be conditioned to obtain a different target by having an additional input. To use it, specify the origin, a list of targets, and the path where the dataset is located. 
 ```
 $ python train_multitarget.py --dataset_path <DATASET_PATH> 
                             --origin <ORIGIN>
@@ -188,14 +188,25 @@ The spectrograms are computed from the audios using the ``librosa.stft()`` funct
 
 Strictly speaking, the values of the Spectrogram returned by the STFT operation are complex numbers. Therefore, for the network to process the data it needs to be decomposed further. The magnitude of the signal is the modulus of Spectrogram, namely ``np.abs(S)`` and the phase of the signal is the angle, obtained as ``np.angle(S)``. 
 
+### Pix2Pix (fixed instrument pair)
 The component that carries the most relevant information is the magnitude, and it is the only one passed to the network, as shown in this diagram:
 <p align="center">
 <img src="docs/Pix2Pix Timbre Transfer.png" width="960" height="391">
 </p>
 <p align="center">
-Diagram of the end-to-end audio processing pipeline. 
+Diagram of the end-to-end audio processing pipeline for a fixed instrument pair. 
 <br>
-The STFT and iSTFT correspond to the forward and inverse Short Time Fourier Transforms respectively. The magnitude is processed at the Pix2Pix block, which returns a magnitude estimation as output. The phase is processed at the Phase estimator block, with one of the implementations discussed below.   
+The STFT and iSTFT correspond to the forward and inverse Short Time Fourier Transforms respectively. The magnitude is processed at the Pix2Pix block, which returns a magnitude estimation as output. The phase is processed at the Phase estimator block, with one of the implementations <a href="#reconstructing-the-audio">discussed below</a>.   
+</p>
+
+### Pix2Pix (Multitarget)
+<p align="center">
+<img src="docs/Pix2Pix Timbre Transfer Multitarget.png" width="960" height="391">
+</p>
+<p align="center">
+Diagram of the end-to-end audio processing pipeline for the conditioned multitarget model. 
+<br>
+The Pix2Pix block now receives 2 magnitude inputs to generate a magnitude with the content of the input audio as played by the instrument in style target audio. 
 </p>
 
 ### Reconstructing the audio
