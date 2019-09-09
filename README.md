@@ -151,8 +151,7 @@ Time domain (Waveform) | Frequency domain (Spectrogram, STFT) -->
 </p>
 <p align="center">
 Example of the Keyboard visualized in Adobe Audition.
-</p>
-<p align="center">
+<br>
 Top: Time domain (Waveform), Bottom: Frequency domain (Spectrogram, STFT)
 </p>
 
