@@ -357,13 +357,6 @@ At the end of every training epoch the same audio file has been used to generate
 
 ### Visualizations
 
-#### keyboard_acoustic_2_any
-| <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_input.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/prediction.gif" width="340" height="256"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_true.png" width="200" height="200"> |
-| --- | --- | --- |
-| <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_input.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/prediction.gif" width="340" height="256"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_true.png" width="200" height="200"> |
-| <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_input.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/prediction.gif" width="340" height="256"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_true.png" width="200" height="200"> |
-Input spectrogram | Prediction over 100 epochs | True target
-
 #### keyboard_acoustic_2_guitar_acoustic
 <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_input.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/prediction.gif" width="340" height="256"> | <img src="docs/results/keyboard_acoustic_2_guitar_acoustic/spectrogram_true.png" width="200" height="200"> 
 --- | --- | ---
@@ -377,6 +370,13 @@ Input spectrogram | Prediction over 100 epochs | True target
 #### keyboard_acoustic_2_synth_lead_synthetic
 <img src="docs/results/keyboard_acoustic_2_synth_lead_synthetic/spectrogram_input.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_synth_lead_synthetic/prediction.gif" width="340" height="256"> | <img src="docs/results/keyboard_acoustic_2_synth_lead_synthetic/spectrogram_true.png" width="200" height="200"> 
 --- | --- | ---
+Input spectrogram | Prediction over 100 epochs | True target
+
+#### keyboard_acoustic_2_any
+| <img src="docs/results/keyboard_acoustic_2_any/guitar_acoustic/spectrogram_input.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_any/guitar_acoustic/prediction.gif" width="340" height="256"> | <img src="docs/results/keyboard_acoustic_2_any/guitar_acoustic/spectrogram_true.png" width="200" height="200"> |
+| --- | --- | --- |
+| <img src="docs/results/keyboard_acoustic_2_any/string_acoustic/spectrogram_input.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_any/string_acoustic/prediction.gif" width="340" height="256"> | <img src="docs/results/keyboard_acoustic_2_any/string_acoustic/spectrogram_true.png" width="200" height="200"> |
+| <img src="docs/results/keyboard_acoustic_2_any/synth_lead_synthetic/spectrogram_input.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_any/synth_lead_synthetic/prediction.gif" width="340" height="256"> | <img src="docs/results/keyboard_acoustic_2_any/synth_lead_synthetic/spectrogram_true.png" width="200" height="200"> |
 Input spectrogram | Prediction over 100 epochs | True target
 
 ### Audios
