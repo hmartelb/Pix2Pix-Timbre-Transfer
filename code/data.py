@@ -239,19 +239,3 @@ class DataGeneratorMultiTarget(tf.keras.utils.Sequence):
         'Updates indexes after each epoch'
         if self.shuffle:
             np.random.shuffle(self.filenames)
-
-if __name__ == "__main__":
-    instrument = 'keyboard_acoustic'
-    audio = load_audio(os.path.join('..','data','audios',instrument+'.wav'))
-    print(audio.shape)
-
-    mag, phase = forward_transform(audio)
-    mag = amplitude_to_db(mag)
-    print('mag', mag.shape, np.max(np.abs(mag)), np.min(np.abs(mag)))
-    print('phase', phase.shape)
-
-    plt.imsave(os.path.join('..','data','audios',instrument+'.png'), np.flip(mag[0:256,0:256], axis=0))
-
-    # mag = db_to_amplitude(mag)
-    # recovered = inverse_transform(mag, phase)
-    # write_audio(os.path.join('..','data','audios','synth_lead_synthetic_recovered.wav'), recovered)
