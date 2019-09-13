@@ -10,15 +10,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
-from config import (CHECKPOINT_DIR, DATASET_PATH, IMG_DIM, OUTPUT_PATH,
-                    TEST_AUDIOS_PATH)
+from config import CHECKPOINT_DIR, IMG_DIM, OUTPUT_PATH, TEST_AUDIOS_PATH
 from data import (DataGenerator, amplitude_to_db, db_to_amplitude,
                   forward_transform, init_directory, inverse_transform,
                   join_magnitude_slices, load_audio, slice_magnitude,
                   write_audio)
-from losses import discriminator_loss, generator_loss
+from losses import discriminator_loss, generator_loss, l1_loss
 from model import Discriminator, Generator
 
 
@@ -29,9 +27,9 @@ def generate_audio(prediction, phase, output_name):
     write_audio(output_name, audio)
 
 def generate_images(prediction, test_input, target, output_name):
-    display_list = [test_input[0,:,:,0], target[0,:,:,0], prediction[0,:,:,0]]
-    title = ['input', 'true', 'pred']
-    for i in range(3):
+    display_list = [prediction[0,:,:,0], test_input[0,:,:,0], target[0,:,:,0]]
+    title = ['pred']
+    for i in range(len(title)):
         temp_img = np.flip((display_list[i] + 1) / 2, axis=0) # [-1,1] >> [0,1]
         plt.imsave(output_name+'_'+title[i]+'.png', temp_img) 
 
@@ -91,33 +89,42 @@ def find_lr(data, batch_size=1, start_lr=1e-9, end_lr=1):
         with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
             # Generate a fake image
             gen_output = generator(input_image, training=True)
+            
             # Train the discriminator
             disc_real_output = discriminator([input_image, target], training=True)
             disc_generated_output = discriminator([input_image, gen_output], training=True)
+            
             # Compute the losses
-            gen_mae = tf.reduce_mean(tf.abs(target - gen_output))
+            gen_mae = l1_loss(target, gen_output)
             gen_loss = generator_loss(disc_generated_output, gen_mae)
             disc_loss = discriminator_loss(disc_real_output, disc_generated_output)
 
             # Compute the gradients
             generator_gradients = gen_tape.gradient(gen_loss,generator.trainable_variables)
             discriminator_gradients = disc_tape.gradient(disc_loss, discriminator.trainable_variables)
+            
             # Apply the gradients
             generator_optimizer.apply_gradients(zip(generator_gradients, generator.trainable_variables))
             discriminator_optimizer.apply_gradients(zip(discriminator_gradients, discriminator.trainable_variables))
+            
             # Convert losses to numpy 
             gen_mae = gen_mae.numpy()
+            
             # Update the progress bar
             progbar.add(1, values=[("gen_mae", gen_mae)])
+            
             # On batch end
             lr = tf.keras.backend.get_value(generator_optimizer.lr)
             lrs.append(lr)
+            
             # Update the lr
             lr *= lr_mult
             tf.keras.backend.set_value(generator_optimizer.lr, lr)
             tf.keras.backend.set_value(discriminator_optimizer.lr, lr)
+            
             # Update the losses
             losses['gen_mae'].append(gen_mae)
+            
             # Update the best losses
             if(best_losses['gen_mae'] > gen_mae):
                 best_losses['gen_mae'] = gen_mae
@@ -144,7 +151,6 @@ def train(data, epochs, batch_size=1, lr=1e-3, epoch_offset=0):
 
     # Get the number of batches in the training set
     epoch_size = data['training'].__len__()
-    # val_size = data['validation'].__len__()
 
     print()
     print("Started training with the following parameters: ")
@@ -178,13 +184,17 @@ def train(data, epochs, batch_size=1, lr=1e-3, epoch_offset=0):
             with tf.GradientTape() as gen_tape:
                 # Generate a fake image
                 gen_output = generator(input_image, training=True)
+                
                 # Compute the losses
-                gen_mae = tf.reduce_mean(tf.abs(target - gen_output)) # Timbre transfer
-                # gen_mae = tf.reduce_mean(tf.abs(input_image - gen_output)) # Autoencoder
+                gen_mae = l1_loss(target, gen_output) # Timbre transfer
+                # gen_mae = l1_loss(input_image, gen_output) # Autoencoder
+
                 # Compute the gradients
                 generator_gradients = gen_tape.gradient(gen_mae,generator.trainable_variables)        
+                
                 # Apply the gradients
                 generator_optimizer.apply_gradients(zip(generator_gradients, generator.trainable_variables))
+                
                 # Update the progress bar
                 gen_mae = gen_mae.numpy()
                 gen_mae_total += gen_mae
@@ -202,6 +212,7 @@ def train(data, epochs, batch_size=1, lr=1e-3, epoch_offset=0):
         
         epoch_output = os.path.join(OUTPUT_PATH, model_name, str((epoch+1)+epoch_offset).zfill(3))
         init_directory(epoch_output)
+        
         # Generate audios and save spectrograms for the entire audios
         prediction = generator(test_input, training=False)
         prediction = (prediction + 1) / 2
@@ -218,30 +229,28 @@ def train(data, epochs, batch_size=1, lr=1e-3, epoch_offset=0):
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
+    ap.add_argument('--dataset_path', required=True)
+    ap.add_argument('--origin', required=True)
+    ap.add_argument('--target', required=True)
     ap.add_argument('--gpu', required=False, default='0')
     ap.add_argument('--epochs', required=False, default=100)
     ap.add_argument('--epoch_offset', required=False, default=0)
     ap.add_argument('--batch_size', required=False, default=1)
     ap.add_argument('--lr', required=False, default=5e-6)
-    ap.add_argument('--base_path', required=False, default=DATASET_PATH)
-    ap.add_argument('--origin', required=False, default='keyboard_acoustic')
-    ap.add_argument('--target', required=False, default='guitar_acoustic')
     ap.add_argument('--validation_split', required=False, default=0.9)
     ap.add_argument('--findlr', required=False, default=False)
     args = ap.parse_args()
 
-    # Select which GPU to use and enable tf.foat16
+    # Select which GPU to use and enable mixed precision
     print('Using GPU: '+ args.gpu)
     os.environ["CUDA_DEVICE_ORDER"] = 'PCI_BUS_ID'
     os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
     os.environ['TF_ENABLE_AUTO_MIXED_PRECISION'] = '1'
 
-    # tf.keras.backend.set_floatx('float32')
-
     data = {
         'training': DataGenerator(origin=args.origin, 
                                 target=args.target,
-                                base_path=args.base_path,
+                                base_path=args.dataset_path,
                                 batch_size=int(args.batch_size),
                                 img_dim=IMG_DIM,
                                 validation_split=float(args.validation_split),
@@ -250,7 +259,7 @@ if __name__ == '__main__':
 
         'validation': DataGenerator(origin=args.origin, 
                                 target=args.target,
-                                base_path=args.base_path,
+                                base_path=args.dataset_path,
                                 batch_size=int(args.batch_size),
                                 img_dim=IMG_DIM,
                                 validation_split=float(args.validation_split),
@@ -258,6 +267,7 @@ if __name__ == '__main__':
                                 scale_factor=1,
                                 shuffle=False)
     }
+
     if(args.findlr):
         find_lr(data, int(args.batch_size))
     else:

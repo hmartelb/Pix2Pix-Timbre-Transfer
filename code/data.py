@@ -1,9 +1,17 @@
-import tensorflow as tf
-import numpy as np
+import fnmatch
 import os
-import librosa
 
 import matplotlib.pyplot as plt
+import numpy as np
+
+import librosa
+import tensorflow as tf
+
+
+def files_within(directory_path, pattern="*"):
+    for dirpath, _, filenames in os.walk(directory_path):
+        for file_name in fnmatch.filter(filenames, pattern):
+            yield os.path.join(dirpath, file_name)
 
 def init_directory(directory):
     if(not os.path.isdir(directory)):

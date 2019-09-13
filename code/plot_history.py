@@ -3,12 +3,13 @@ import pandas as pd
 import os
 import argparse
 
+from config import CHECKPOINT_DIR
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
-    ap.add_argument('--origin', required=False, default='keyboard_acoustic')
-    ap.add_argument('--target', required=False, default='guitar_acoustic')
-    ap.add_argument('--models_path', required=False, default='models')
+    ap.add_argument('--origin', required=True)
+    ap.add_argument('--target', required=True)
+    ap.add_argument('--models_path', required=False, default=CHECKPOINT_DIR)
     args = ap.parse_args()
 
     history_name = os.path.join(args.models_path, args.origin+'_2_'+args.target, 'history.csv')

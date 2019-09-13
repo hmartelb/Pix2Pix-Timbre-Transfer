@@ -2,6 +2,7 @@ from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
 import argparse
+import ast
 import os
 import time
 from datetime import datetime
@@ -11,13 +12,12 @@ import numpy as np
 import pandas as pd
 
 import tensorflow as tf
-from config import (CHECKPOINT_DIR, DATASET_PATH, IMG_DIM, OUTPUT_PATH,
-                    TEST_AUDIOS_PATH)
+from config import CHECKPOINT_DIR, IMG_DIM, OUTPUT_PATH, TEST_AUDIOS_PATH
 from data import (DataGeneratorMultiTarget, amplitude_to_db, db_to_amplitude,
                   forward_transform, init_directory, inverse_transform,
                   join_magnitude_slices, load_audio, slice_magnitude,
                   write_audio)
-from losses import discriminator_loss, generator_loss
+from losses import discriminator_loss, generator_loss, l1_loss
 from model import Discriminator, Generator
 
 
@@ -29,7 +29,6 @@ def generate_audio(prediction, phase, output_name):
 
 def generate_images(prediction, test_input, target, output_name):
     display_list = [prediction[0,:,:,0], test_input[0,:,:,0], target[0,:,:,0]]
-    # title = ['input', 'true', 'pred']
     title = ['pred']
     for i in range(len(title)):
         temp_img = np.flip((display_list[i] + 1) / 2, axis=0) # [-1,1] >> [0,1]
@@ -95,41 +94,50 @@ def find_lr(data, batch_size=1, start_lr=1e-9, end_lr=1):
         with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
             # Generate a fake image
             gen_output = generator(input_image, training=True)
+            
             # Train the discriminator
             disc_real_output = discriminator([input_image[:,:,:,0:1], target], training=True)
             disc_generated_output = discriminator([input_image[:,:,:,0:1], gen_output], training=True)
+            
             # Compute the losses
-            gen_mae = tf.reduce_mean(tf.abs(target - gen_output))
+            gen_mae = l1_loss(target, gen_output)
             gen_loss = generator_loss(disc_generated_output, gen_mae)
             disc_loss = discriminator_loss(disc_real_output, disc_generated_output)
 
             # Compute the gradients
             generator_gradients = gen_tape.gradient(gen_loss, generator.trainable_variables)
             discriminator_gradients = disc_tape.gradient(disc_loss, discriminator.trainable_variables)
+            
             # Apply the gradients
             generator_optimizer.apply_gradients(zip(generator_gradients, generator.trainable_variables))
             discriminator_optimizer.apply_gradients(zip(discriminator_gradients, discriminator.trainable_variables))
+            
             # Convert losses to numpy 
             gen_mae = gen_mae.numpy()
             gen_loss = gen_loss.numpy()
             disc_loss = disc_loss.numpy()
+            
             # Update the progress bar
             progbar.add(1, values=[
                                     ("gen_mae", gen_mae), 
                                     ("gen_loss", gen_loss), 
                                     ("disc_loss", disc_loss)
                                 ])
+            
             # On batch end
             lr = tf.keras.backend.get_value(generator_optimizer.lr)
             lrs.append(lr)
+            
             # Update the lr
             lr *= lr_mult
             tf.keras.backend.set_value(generator_optimizer.lr, lr)
             tf.keras.backend.set_value(discriminator_optimizer.lr, lr)
+            
             # Update the losses
             losses['gen_mae'].append(gen_mae)
             losses['gen_loss'].append(gen_loss)
             losses['disc_loss'].append(disc_loss)
+            
             # Update the best losses
             if(best_losses['gen_mae'] > gen_mae):
                 best_losses['gen_mae'] = gen_mae
@@ -219,16 +227,20 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
             with tf.GradientTape() as gen_tape, tf.GradientTape() as disc_tape:
                 # Generate a fake image
                 gen_output = generator(input_image, training=True)
+                
                 # Train the discriminator
                 disc_real_output = discriminator([input_image[:,:,:,0:1], target], training=True)
                 disc_generated_output = discriminator([input_image[:,:,:,0:1], gen_output], training=True)
+                
                 # Compute the losses
-                gen_mae = tf.reduce_mean(tf.abs(target - gen_output))
+                gen_mae = l1_loss(target, gen_output)
                 gen_loss = generator_loss(disc_generated_output, gen_mae)
                 disc_loss = discriminator_loss(disc_real_output, disc_generated_output)
+                
                 # Compute the gradients
                 generator_gradients = gen_tape.gradient(gen_loss,generator.trainable_variables)
                 discriminator_gradients = disc_tape.gradient(disc_loss, discriminator.trainable_variables)
+                
                 # Apply the gradients
                 generator_optimizer.apply_gradients(zip(generator_gradients, generator.trainable_variables))
                 discriminator_optimizer.apply_gradients(zip(discriminator_gradients, discriminator.trainable_variables))
@@ -283,25 +295,24 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
 
         # Callback at the end of the epoch for the DataGenerator
         data['training'].on_epoch_end()
-        data['validation'].on_epoch_end()
+        # data['validation'].on_epoch_end()
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
+    ap.add_argument('--dataset_path', required=True)
+    ap.add_argument('--origin', required=True)
+    ap.add_argument('--target', required=True)
     ap.add_argument('--gpu', required=False, default='0')
     ap.add_argument('--epochs', required=False, default=100)
     ap.add_argument('--epoch_offset', required=False, default=0)
     ap.add_argument('--batch_size', required=False, default=1)
     ap.add_argument('--gen_lr', required=False, default=5e-6)
-    ap.add_argument('--gen_init', required=False, default=0)
     ap.add_argument('--disc_lr', required=False, default=5e-7)
-    ap.add_argument('--base_path', required=False, default=DATASET_PATH)
-    ap.add_argument('--origin', required=False, default='keyboard_acoustic')
-    ap.add_argument('--target', required=False, default=['guitar_acoustic', 'string_acoustic', 'synth_lead_synthetic'])
     ap.add_argument('--validation_split', required=False, default=0.9)
     ap.add_argument('--findlr', required=False, default=False)
     args = ap.parse_args()
 
-    # Select which GPU to use and enable tf.foat16
+    # Select which GPU to use and enable mixed precision
     print('Using GPU: '+ args.gpu)
     os.environ["CUDA_DEVICE_ORDER"] = 'PCI_BUS_ID'
     os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
@@ -310,8 +321,8 @@ if __name__ == '__main__':
     data = {
         'training': DataGeneratorMultiTarget(
                                                 origin=args.origin, 
-                                                target=args.target,
-                                                base_path=args.base_path,
+                                                target=ast.literal_eval(args.target),
+                                                base_path=args.dataset_path,
                                                 batch_size=int(args.batch_size),
                                                 img_dim=IMG_DIM,
                                                 validation_split=float(args.validation_split),
@@ -321,8 +332,8 @@ if __name__ == '__main__':
 
         'validation': DataGeneratorMultiTarget(
                                                 origin=args.origin, 
-                                                target=args.target,
-                                                base_path=args.base_path,
+                                                target=ast.literal_eval(args.target),
+                                                base_path=args.dataset_path,
                                                 batch_size=int(args.batch_size),
                                                 img_dim=IMG_DIM,
                                                 validation_split=float(args.validation_split),

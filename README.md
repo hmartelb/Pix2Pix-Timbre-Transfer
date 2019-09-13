@@ -83,8 +83,8 @@ $ python synthesize_audios.py --nsynth_path <NSYNTH_PATH>
 ```
 
 ```
-$ python compute_features.py --audios <AUDIOS_PATH> 
-                             --features <FEATURES_PATH>
+$ python compute_features.py --audios_path <AUDIOS_PATH> 
+                             --features_path <FEATURES_PATH>
 ```
 ### Pix2Pix training
 Train the Pix2Pix network with the ``train.py`` script, specifying the instrument pair to convert from origin to target, and the path where the dataset is located. 

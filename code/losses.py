@@ -2,11 +2,13 @@ import tensorflow as tf
 
 LAMBDA = 100
 
-def generator_loss(disc_generated_output, l1_loss): # gen_output, target):
+def l1_loss(target, output):
+    return tf.reduce_mean(tf.abs(target - output))
+
+def generator_loss(disc_generated_output, l1_value):
     loss_object = tf.keras.losses.BinaryCrossentropy(from_logits=True)
     gan_loss = loss_object(tf.ones_like(disc_generated_output), disc_generated_output)
-    # l1_loss = tf.reduce_mean(tf.abs(target - gen_output))
-    total_gen_loss = gan_loss + (LAMBDA * l1_loss)
+    total_gen_loss = gan_loss + (LAMBDA * l1_value)
     return total_gen_loss
 
 def discriminator_loss(disc_real_output, disc_generated_output):

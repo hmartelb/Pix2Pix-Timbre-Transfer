@@ -1,20 +1,23 @@
-import os
-from data import load_audio, forward_transform, amplitude_to_db, init_directory, slice_magnitude
-import numpy as np
 import argparse
+import os
 
-from config import DATASET_AUDIOS_PATH, DATASET_FEATURES_PATH
+import numpy as np
+
+from data import (amplitude_to_db, forward_transform, init_directory,
+                  load_audio, slice_magnitude)
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument('--audios', required=False, default=DATASET_AUDIOS_PATH)
-    ap.add_argument('--features', required=False, default=DATASET_FEATURES_PATH)
+    ap.add_argument('--audios_path', required=True)
+    ap.add_argument('--features_path', required=True)
     args = ap.parse_args()
 
-    for instrument in os.listdir(args.audios):
+    assert os.path.isdir(args.audios_path), 'Audios not found'
+
+    for instrument in os.listdir(args.audios_path):
         print(instrument)
-        audios_dir = os.path.join(args.audios, instrument)
-        features_dir = os.path.join(args.features, instrument)
+        audios_dir = os.path.join(args.audios_path, instrument)
+        features_dir = os.path.join(args.features_path, instrument)
         init_directory(features_dir)
 
         for f in os.listdir(audios_dir):

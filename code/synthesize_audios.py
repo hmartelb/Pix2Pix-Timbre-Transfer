@@ -7,27 +7,23 @@ import numpy as np
 import pandas
 
 import librosa
-from config import (AUDIOS_DIRECTORY, DEFAULT_SAMPLING_RATE, MIDI_DIRECTORY,
-                    NSYNTH_PATH)
-from data import init_directory, list_files, write_audio
+from config import DEFAULT_SAMPLING_RATE, NSYNTH_SAMPLE_RATE, NSYNTH_VELOCITIES
+from data import files_within, init_directory
 from lib.NoteSynthesizer import NoteSynthesizer
-
-NSYNTH_VELOCITIES = [25, 50, 100, 127]
-NSYNTH_SAMPLE_RATE = 16000
-SAMPLE_RATE = DEFAULT_SAMPLING_RATE
+from scipy.io.wavfile import write as write_wav
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
-    ap.add_argument('--nsynth_path', required=False, default=os.path.join('..', 'data', 'nsynth', 'train', 'audio'))
-    ap.add_argument('--midi_path', required=False, default=os.path.join('..', 'data', 'midi', 'Classical_Music_MIDI'))
-    ap.add_argument('--audios_path', required=False, default=os.path.join('..', 'data', 'audios', 'Classical_Music_MIDI'))
+    ap.add_argument('--nsynth_path', required=True)
+    ap.add_argument('--midi_path', required=True)
+    ap.add_argument('--audios_path', required=True)
     ap.add_argument('--playback_speed', required=False, default=1)
     ap.add_argument('--duration_rate', required=False, default=4)
     ap.add_argument('--transpose', required=False, default=0)
     args = ap.parse_args()
 
-    MIDI_DIRECTORY = args.midi_path
-    AUDIOS_DIRECTORY = os.path.join(args.audios_path, 'P'+str(args.playback_speed).zfill(1)+'D'+str(args.duration_rate).zfill(1)+'T'+str(args.transpose).zfill(2))
+    assert os.path.isdir(args.nsynth_path), 'NSynth Dataset not found'
+    assert os.path.isdir(args.midi_path), 'MIDI Dataset not found'
 
     instruments = [
         {'name': 'guitar', 'source_type': 'acoustic', 'preset': 0},
@@ -36,8 +32,8 @@ if __name__ == '__main__':
         {'name': 'synth_lead', 'source_type': 'synthetic', 'preset': 0}
     ]
     
-    midifiles = list_files(MIDI_DIRECTORY, '.mid')
-    init_directory(AUDIOS_DIRECTORY)
+    midifiles = list(files_within(args.midi_path, '*.mid'))
+    init_directory(args.audios_path)
 
     print()
     print("Instruments: \t", len(instruments), [instrument['name'] for instrument in instruments])
@@ -46,7 +42,7 @@ if __name__ == '__main__':
 
     for instrument in instruments:
         synth = NoteSynthesizer(
-                                    dataset_path=NSYNTH_PATH, 
+                                    dataset_path=args.nsynth_path, 
                                     sr=NSYNTH_SAMPLE_RATE, 
                                     velocities=NSYNTH_VELOCITIES, 
                                     transpose=float(args.transpose)
@@ -54,11 +50,11 @@ if __name__ == '__main__':
         synth.preload_notes(instrument=instrument['name'], source_type=instrument['source_type'])
         
         instrument_folder = instrument['name']+'_'+instrument['source_type']
-        init_directory(os.path.join(AUDIOS_DIRECTORY, instrument_folder))
+        init_directory(os.path.join(args.audios_path, instrument_folder))
     
         for mid in midifiles:
             _, seq_name = os.path.split(mid)
-            output_name = os.path.join(AUDIOS_DIRECTORY, instrument_folder, os.path.splitext(seq_name)[0]+'.wav')
+            output_name = os.path.join(args.audios_path, instrument_folder, os.path.splitext(seq_name)[0]+'.wav')
 
             print("Instrument: \t", instrument_folder)
             print("Sequence: \t", mid)
@@ -71,11 +67,10 @@ if __name__ == '__main__':
                                                     source_type=instrument['source_type'],
                                                     preset=instrument['preset'],
                                                     playback_speed=float(args.playback_speed),
-                                                    duration_scale=float(args.duration_scale),
+                                                    duration_scale=float(args.duration_rate),
                                                 )
-                try:
-                    if(SAMPLE_RATE != NSYNTH_SAMPLE_RATE):
-                        audio = librosa.core.resample(audio, NSYNTH_SAMPLE_RATE, SAMPLE_RATE)
-                    write_audio(output_name, audio, SAMPLE_RATE)
-                except:
-                    print('Could not export audio', output_name)
+
+                if(DEFAULT_SAMPLING_RATE != NSYNTH_SAMPLE_RATE):
+                    audio = librosa.core.resample(audio, NSYNTH_SAMPLE_RATE, DEFAULT_SAMPLING_RATE)
+                # write_audio(output_name, audio, DEFAULT_SAMPLING_RATE)
+                write_wav(output_name, DEFAULT_SAMPLING_RATE, np.array(32000.*audio, np.short))

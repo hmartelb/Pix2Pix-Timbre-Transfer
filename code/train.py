@@ -11,13 +11,12 @@ import numpy as np
 import pandas as pd
 
 import tensorflow as tf
-from config import (CHECKPOINT_DIR, DATASET_PATH, IMG_DIM, OUTPUT_PATH,
-                    TEST_AUDIOS_PATH)
+from config import CHECKPOINT_DIR, IMG_DIM, OUTPUT_PATH, TEST_AUDIOS_PATH
 from data import (DataGenerator, amplitude_to_db, db_to_amplitude,
                   forward_transform, init_directory, inverse_transform,
                   join_magnitude_slices, load_audio, slice_magnitude,
                   write_audio)
-from losses import discriminator_loss, generator_loss
+from losses import discriminator_loss, generator_loss, l1_loss
 from model import Discriminator, Generator
 
 
@@ -98,7 +97,7 @@ def find_lr(data, batch_size=1, start_lr=1e-9, end_lr=1):
             disc_real_output = discriminator([input_image, target], training=True)
             disc_generated_output = discriminator([input_image, gen_output], training=True)
             # Compute the losses
-            gen_mae = tf.reduce_mean(tf.abs(target - gen_output))
+            gen_mae = l1_loss(target, gen_output)
             gen_loss = generator_loss(disc_generated_output, gen_mae)
             disc_loss = discriminator_loss(disc_real_output, disc_generated_output)
 
@@ -144,7 +143,7 @@ def find_lr(data, batch_size=1, start_lr=1e-9, end_lr=1):
     print('gen_loss =', best_losses['gen_loss'])
     print('disc_loss =', best_losses['disc_loss'])
 
-def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0):
+def train(data, epochs, batch_size=1, gen_lr=1e-4, disc_lr=1e-4, epoch_offset=0):
     generator = Generator()
     discriminator = Discriminator()
 
@@ -216,7 +215,7 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
                 disc_generated_output = discriminator([input_image, gen_output], training=True)
                 
                 # Compute the losses
-                gen_mae = tf.reduce_mean(tf.abs(target - gen_output))
+                gen_mae = l1_loss(target, gen_output)
                 gen_loss = generator_loss(disc_generated_output, gen_mae)
                 disc_loss = discriminator_loss(disc_real_output, disc_generated_output)
                 
@@ -278,7 +277,7 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
 
         # Callback at the end of the epoch for the DataGenerator
         data['training'].on_epoch_end()
-        data['validation'].on_epoch_end()
+        # data['validation'].on_epoch_end()
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
@@ -321,6 +320,7 @@ if __name__ == '__main__':
                                 scale_factor=1,
                                 shuffle=False)
     }
+    
     if(args.findlr):
         find_lr(data, int(args.batch_size))
     else:
