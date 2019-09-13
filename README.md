@@ -84,7 +84,7 @@ $ python synthesize_audios.py --nsynth_path <NSYNTH_PATH>
 
 ```
 $ python compute_features.py --audios <AUDIOS_PATH> 
-			                 --features <FEATURES_PATH>
+                             --features <FEATURES_PATH>
 ```
 ### Pix2Pix training
 Train the Pix2Pix network with the ``train.py`` script, specifying the instrument pair to convert from origin to target, and the path where the dataset is located. 
@@ -383,11 +383,11 @@ Input spectrogram | Prediction over 100 epochs | True target
 
 #### keyboard_acoustic_2_any
 
-| Input | Prediction 1 | Target 1 | Prediction 2 | Target 2 | Prediction 3 | Target 3 |
-| --- | --- | --- | --- | --- | --- | --- |
-| [Sample 1]() | [Sample 1]() | [Sample 1]() | [Sample 1]() | [Sample 1]() | [Sample 1]() | [Sample 1]() |
-| [Sample 2]() | [Sample 2]() | [Sample 2]() | [Sample 2]() | [Sample 2]() | [Sample 2]() | [Sample 2]() |
-| [Sample 3]() | [Sample 3]() | [Sample 3]() | [Sample 3]() | [Sample 3]() | [Sample 3]() | [Sample 3]() |
+| Input | Prediction 1, Prediction 2, Prediction 3 | Target 1, Target 2, Target 3 |
+| --- | --- | --- |
+| [Sample 1]() | [Sample 1](), [Sample 1](), [Sample 1]() | [Sample 1](), [Sample 1](), [Sample 1]() |
+| [Sample 2]() | [Sample 2](), [Sample 2](), [Sample 2]() | [Sample 2](), [Sample 2](), [Sample 2]() |
+| [Sample 3]() | [Sample 3](), [Sample 3](), [Sample 3]() | [Sample 3](), [Sample 3](), [Sample 3]() |
 
 #### keyboard_acoustic_2_guitar_acoustic
 
@@ -442,6 +442,17 @@ $ python predict_multitarget.py --model <GENERATOR_WEIGHTS>
 
 # Conclusion 
 >[Table of contents](#table-of-contents)
+
+The system presented in this work can perform the Timbre Transfer problem and achieve reasonable results. However, it is obvious that this system has some limitations and that the results are still far from being usable in a professional music production environment. In this section, the [Results](#results) presented above are discussed.
+
+An observation is that the audios from the first training epochs sound like an interpolation between the original instrument and the target, but present very noticeable distortion that is not pleasurable for the listener. This is specially true in the case of keyboard_acoustic_2_string_acoustic. 
+
+In the epoch 50, the output sounds similar to the target with still notable artifacts. The models have learned characteristics from the target instrument that are present in the output. For example, the model keyboard_acoustic_2_guitar_acoustic introduces the sound of the guitar strings even in places where the original melody from the keyboard does not produce such noises. Also, in the case of keyboard_acoustic_2_synth_lead_synthetic, the output sound presents the high frequency harmonics sustained for a longer period of time than in the original melody. 
+
+The results from the epoch 50 to the epoch 100 only have minimal changes, but the perceptual implications of them are noticeable. In all cases, some of the undesired noises and distortions from earlier training epochs are reduced. As a result the output sound is perceptually more natural, but stull presents significant artifacts when compared to the ground truth target.
+
+<!-- ### Generator only vs Fixed vs Conditioned
+The most interesting finding is that the comparison between the models over the dataset leads to the *generator only* model to achive the best performance. This in possibly due to overfitting, since the instrument diversity is very limited. In a real application, the best performance is always achieved by the *conditioned* model. -->
 
 # Future work
 >[Table of contents](#table-of-contents)
