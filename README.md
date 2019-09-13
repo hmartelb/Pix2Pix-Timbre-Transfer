@@ -84,7 +84,7 @@ $ python synthesize_audios.py --nsynth_path <NSYNTH_PATH>
 
 ```
 $ python compute_features.py --audios <AUDIOS_PATH> 
-			    --features <FEATURES_PATH>
+			                 --features <FEATURES_PATH>
 ```
 ### Pix2Pix training
 Train the Pix2Pix network with the ``train.py`` script, specifying the instrument pair to convert from origin to target, and the path where the dataset is located. 
@@ -112,7 +112,8 @@ $ python train_multitarget.py --dataset_path <DATASET_PATH>
                              [--epochs <EPOCHS>]
                              [--epoch_offset <EPOCH_OFFSET>] 
                              [--batch_size <BATCH_SIZE>]
-                             [--lr <LEARNING_RATE>] 
+                             [--gen_lr <GENERATOR_LEARNING_RATE>] 
+                             [--disc_lr <DISCRIMINATOR_LEARNING_RATE>]
                              [--validation_split <VALIDATION_SPLIT>] 
                              [--findlr <FINDLR>]
 ```
@@ -340,6 +341,12 @@ Generator MAE | Discriminator loss | Joint GAN loss
 --- | --- | --- 
 Generator MAE | Discriminator loss | Joint GAN loss
 (best = 0.0222, last = 0.0225) | (best = 1.3097, last = 1.3426)  | (best = 2.9503, last = 2.9925) 
+
+#### keyboard_acoustic_2_any
+<img src="docs/training/keyboard_acoustic_2_any/gen_mae_history.png" width="250" height="250"> | <img src="docs/training/keyboard_acoustic_2_any/disc_loss_history.png" width="250" height="250"> | <img src="docs/training/keyboard_acoustic_2_any/gen_loss_history.png" width="250" height="250"> 
+--- | --- | --- 
+Generator MAE | Discriminator loss | Joint GAN loss
+(best = 0.0437, last = 0.0437) | (best = 1.0173, last = 1.2794)  | (best = 5.1990, last = 5.2048) 
 
 # Results
 >[Table of contents](#table-of-contents)

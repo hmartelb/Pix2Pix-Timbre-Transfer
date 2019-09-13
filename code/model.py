@@ -5,9 +5,7 @@ import os
 import time
 
 import matplotlib.pyplot as plt
-
 import tensorflow as tf
-
 
 def downsample(filters, size, apply_batchnorm=True):
     initializer = tf.random_normal_initializer(0., 0.02)
@@ -38,7 +36,7 @@ def upsample(filters, size, apply_dropout=False):
     result.add(tf.keras.layers.ReLU())
     return result
 
-def Generator():
+def Generator(input_shape=[None,None,1]):
     down_stack = [
         downsample(64, 4, apply_batchnorm=False), 
         downsample(128, 4), 
@@ -68,7 +66,7 @@ def Generator():
                                             kernel_initializer=initializer,
                                             activation='tanh')
     concat = tf.keras.layers.Concatenate()
-    inputs = tf.keras.layers.Input(shape=[None, None, 1])
+    inputs = tf.keras.layers.Input(shape=input_shape)
     x = inputs
     # Downsampling through the model
     skips = []
@@ -83,9 +81,9 @@ def Generator():
     x = last(x)
     return tf.keras.Model(inputs=inputs, outputs=x)
 
-def Discriminator():
-    input_img = tf.keras.layers.Input(shape=[None,None,1])
-    generated_img = tf.keras.layers.Input(shape=[None,None,1])
+def Discriminator(input_shape=[None,None,1]):
+    input_img = tf.keras.layers.Input(shape=input_shape)
+    generated_img = tf.keras.layers.Input(shape=input_shape)
 
     con = tf.keras.layers.Concatenate()([input_img, generated_img])
     initializer = tf.random_normal_initializer(0., 0.02)
