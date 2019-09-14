@@ -390,7 +390,7 @@ Input spectrogram | Prediction over 100 epochs | True target
 
 ### Audios
 
-It is highly recommended to donwload the test_results folder from [this Google Drive link](https://drive.google.com/open?id=1wuha0W6TY2Mi4PX7mPe54ECnM6DWZNmL) to get all the audios at once. 
+>NOTE: It is highly recommended to donwload the test_results folder from [this Google Drive link](https://drive.google.com/open?id=1wuha0W6TY2Mi4PX7mPe54ECnM6DWZNmL) to get all the audios at once. 
 
 However, the following tables are provided to listen to the results one by one. The results are conformed by 6 samples, which are displayed in terms of Input, Output and Target. 4 samples are from the Training set and 2 from the Validation set. 
 
