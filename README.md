@@ -270,7 +270,7 @@ The audios are generated from these 2 datasets by loading the notes from the MID
 Audio synthesizer block diagram. The notes from the MIDI file and the notes from NSynth are combined into a synthesized output audio. 
 </p>
 
-The procedure has been done with all the MIDI files in [Classical Music MIDI](https://www.kaggle.com/soumikrakshit/classical-music-midi) and with the following instruments from [The NSynth Dataset](https://magenta.tensorflow.org/datasets/nsynth) in the preset 0:
+The procedure has been done with all the MIDI files in [Classical Music MIDI](https://www.kaggle.com/soumikrakshit/classical-music-midi) and with the following instruments from [The NSynth Dataset](https://magenta.tensorflow.org/datasets/nsynth) in the note quality 0 (Bright):
 * keyboard_acoustic
 * guitar_acoustic
 * string_acoustic
@@ -509,7 +509,7 @@ There are some aspects of this work which have a considerable margin for improve
 
 ### Diversity of instruments
 
-As mentioned in the section [Dataset](#dataset), the single notes contained in the NSynth Dataset were used to synthesize the audios. In particular, the entire training has been performed using the preset 0 of each instrument pair. However, it may be interesting to experiment with other presets. 
+As mentioned in the section [Dataset](#dataset), the single notes contained in the NSynth Dataset were used to synthesize the audios. In particular, the entire training has been performed using the note quality 0 (bright) of each instrument pair. However, it may be interesting to experiment with other note qualities. 
 
 Another way could be to create a custom dataset with the same structure as NSynth using a SoundFont synthesizer for each new instrument (.sf, .sf2 files).
 
