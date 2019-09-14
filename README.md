@@ -392,9 +392,7 @@ Input spectrogram | Prediction over 100 epochs | True target
 
 The following tables are provided to listen to the results one by one. The results are conformed by 6 samples, which are displayed in terms of Input, Output and Target. 4 samples are from the Training set and 2 from the Validation set. 
 
-```
-NOTE: It is highly recommended to donwload the ``test_results`` folder from [this Google Drive link](https://drive.google.com/open?id=1wuha0W6TY2Mi4PX7mPe54ECnM6DWZNmL) to get all the audios at once. 
-```
+>NOTE: It is highly recommended to donwload the ``test_results`` folder from [this Google Drive link](https://drive.google.com/open?id=1wuha0W6TY2Mi4PX7mPe54ECnM6DWZNmL) to get all the audios at once. 
 
 #### keyboard_acoustic_2_guitar_acoustic
 
@@ -442,9 +440,7 @@ NOTE: It is highly recommended to donwload the ``test_results`` folder from [thi
 
 ### Audios from the real world
 
-```
-NOTE: Again, it is highly recommended to donwload the ``real_world_results`` folder from [this Google Drive link](https://drive.google.com/open?id=1jn5wWAwVl6YVnJ1idR9NvtdXe48TNReT) to get all the audios at once. 
-```
+>NOTE: Again, it is highly recommended to donwload the ``real_world_results`` folder from [this Google Drive link](https://drive.google.com/open?id=1jn5wWAwVl6YVnJ1idR9NvtdXe48TNReT) to get all the audios at once. 
 
 Since the audios presented here are real world recordings, there is no target audio to compare. Therefore, this section is intended entirely for subjective evaluation. In this case, the entire piece has been exported instead of 10 second excerpts to allow the listener to check the audio quality in different parts of the piece.
 
