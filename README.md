@@ -4,7 +4,7 @@ Musical Timbre Transfer using the Pix2Pix architecture. Video documentation for 
 <!-- ![IMAGE ALT TEXT HERE](docs/video_miniature.PNG)](https://www.youtube.com/watch?v=QoH9Lh0YSt0) -->
 
 <p align="center">
-<a href="https://www.youtube.com/watch?v=QoH9Lh0YSt0">
+<a href="https://www.youtube.com/watch?v=QoH9Lh0YSt0" target="_blank">
 <img src="docs/video_miniature.PNG">
 </a>
 </p>
