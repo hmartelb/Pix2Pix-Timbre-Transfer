@@ -523,6 +523,8 @@ Alternatively, consider using the MAESTRO Dataset as mentioned in the section [D
 
 The scope of this project has been limited to explore 3 instrument pairs, having only one pair fixed for each model. In other words, the model converts a specific origin into a specific target and cannot perform the timbre transfer operation properly if the origin or target instruments change. 
 
+The any_2_any architecture would aim to be instrument-independent and achieve comparable performance in the Timbre Transfer problem.
+
 # Acknowledgements
 >[Table of contents](#table-of-contents)
 
