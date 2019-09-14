@@ -392,35 +392,48 @@ Input spectrogram | Prediction over 100 epochs | True target
 
 #### keyboard_acoustic_2_any
 
-| Input | Prediction 1, Prediction 2, Prediction 3 | Target 1, Target 2, Target 3 |
-| --- | --- | --- |
-| [Sample 1]() | [Sample 1](), [Sample 1](), [Sample 1]() | [Sample 1](), [Sample 1](), [Sample 1]() |
-| [Sample 2]() | [Sample 2](), [Sample 2](), [Sample 2]() | [Sample 2](), [Sample 2](), [Sample 2]() |
-| [Sample 3]() | [Sample 3](), [Sample 3](), [Sample 3]() | [Sample 3](), [Sample 3](), [Sample 3]() |
+| Sample name | Set | Input | Output (guitar), Output (string), Output (synth_lead) | Target (guitar), Target (string), Target (synth_lead) |
+| --- | --- | --- | --- | --- |
+| appass_3.wav | Training | [Listen](https://drive.google.com/open?id=1gmQ8V9wFbAUAV5AM8QkxqoxOVLPbUfw8) | [Listen](https://drive.google.com/open?id=1nddktK-oZS5YSQ4w2IU9ZgDlrFyOqrlt), [Listen](https://drive.google.com/open?id=1CcMVLsAl2vTCHAaJ6BkKNsCybmgVumtU), [Listen](https://drive.google.com/open?id=1PnkAyr2tFWYTahtGJGeuPXbGIdx2JUeE) | [Listen](https://drive.google.com/open?id=1SQxxC2dRu91mx73j8MSMERIgUnx7kVsl), [Listen](https://drive.google.com/open?id=1N9fPbd5Zro_jNDD6JXk-WTC6wBbd97zY), [Listen](https://drive.google.com/open?id=19X7YbbL-6shckopKduCAC78uJJjdCGNq)|
+| burg_gewitter.wav | Training | [Listen](https://drive.google.com/open?id=15rYy8qL_gp3rLF_4fm-QRuih3MTCofXl) | [Listen](https://drive.google.com/open?id=11tagVfALUJOMi_-cNlAtAtqUCI2Ql6o1), [Listen](https://drive.google.com/open?id=1qAjq8gwxghOCynwq2InvaKm4hvIZ93Ck), [Listen](https://drive.google.com/open?id=1KA1odUALNfFuluXoHOXuNhsofKdkTHQu) | [Listen](https://drive.google.com/open?id=1IYVbk7IyixIiH0uFRrw_S_ZrmXjIuC1R), [Listen](https://drive.google.com/open?id=1vJ5DG2c8OOOfbwSwBViwhHF06yEqZf0G), [Listen](https://drive.google.com/open?id=1XKu6lsRErd-5BmmlKj3ZjWesw0ONqwTj)|
+| debussy_cc_1.wav | Training | [Listen](https://drive.google.com/open?id=17fyumtCSC1og2rvgmik4mbKMPNHBK3L7) | [Listen](https://drive.google.com/open?id=1_iAqC_DEXhaTN8xc5qjf0XAlRSRTES2l), [Listen](https://drive.google.com/open?id=15c1WcyA8cGiZ7WcRncOeLO_VGFR1jFii), [Listen](https://drive.google.com/open?id=1sTQpcpiceJcfo7Jv22IuPF8Heu5iblmS) | [Listen](https://drive.google.com/open?id=1UFg2Ac9Rd7GO7tsFEmlVfMUspMebEhm0), [Listen](https://drive.google.com/open?id=1Soybu7DBMlG4YEwnjQGWyQwY1nz5CYmd), [Listen](https://drive.google.com/open?id=1cAVAShk9gm8fnL4R2EzHAqZyGdK5IWdf)|
+| mond_3.wav | Training | [Listen](https://drive.google.com/open?id=1gEWUmFas2Hvr0aEyEo0H9bKoJINFCNpX) | [Listen](https://drive.google.com/open?id=1Ve3iHWHx8MxtUsgOgY6URqBtTj5v6JEK), [Listen](https://drive.google.com/open?id=1px4Zwbl3kWaPwUAQgO7aSdxct6fMSxRl), [Listen](https://drive.google.com/open?id=16unhYFf4yiS8IHpjkIyKku1LHpWB-2B6) | [Listen](https://drive.google.com/open?id=1rQb34Ok4O_lv7cQuuy1pZeoYIQnbT8zj), [Listen](https://drive.google.com/open?id=1SHa7mTC_GDO50QLYIIilnHWsfZScvKmL), [Listen](https://drive.google.com/open?id=1THVP1GQGmZqcWVgtclwtHECq-IMK8Qdc)|
+| schuim-3.wav | Validation | [Listen](https://drive.google.com/open?id=1lPyfKD916xSjYPQrCllJl8J2ir5pRnX9) | [Listen](https://drive.google.com/open?id=1q5PwNpLO2QHcwEouklHofw3VGCbuIJ20), [Listen](https://drive.google.com/open?id=1HC87fpM3tvs8pIYR6vs1uiBGBN2cepd-), [Listen](https://drive.google.com/open?id=1lbZSqWg1tHEtP3zApx78HBT3tJj5oN97) | [Listen](https://drive.google.com/open?id=1UUtlogIO8Da5z5a-hr7mTe6ROcR5-qT5), [Listen](https://drive.google.com/open?id=1ajgHG5qydMhvNGb5PGePkIlnOD3OgVKq), [Listen](https://drive.google.com/open?id=1upGPu3nEcFhvRdEOjPvpWLvw0Knn3pKv)|
+| ty_august.wav | Validation | [Listen](https://drive.google.com/open?id=1J0fdHTbFtkdArBwKArVJ4V72MR_IZlHO) | [Listen](https://drive.google.com/open?id=1QnYmmmlqjX7y-ECweMZKSn_rDwmEz-mo), [Listen](https://drive.google.com/open?id=1x_EpVm3c9XRJVuz8fKmUcqXSJhW9vcxj), [Listen](https://drive.google.com/open?id=1VAR78skrSS_GCRS0hspTG9uQV9hmJy2E) | [Listen](https://drive.google.com/open?id=1RArFTlrJxr4dYpyi8U8HXf_lasMAgG11), [Listen](https://drive.google.com/open?id=1TATbXKE5E24DU7WJtI4bcjepHda_dSG8), [Listen](https://drive.google.com/open?id=1GvPLym-R5XaIcoEpFolHhyZ0PZIh0ClR)|
+
 
 #### keyboard_acoustic_2_guitar_acoustic
 
-| Input | Prediction | Target |
-| --- | --- | --- |
-| [Sample 1](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | [Sample 1]() | [Sample 1](https://drive.google.com/open?id=1hGWHfV03yok2NSfXipK7KDVp9kTbUbjH)|
-| [Sample 2]() | [Sample 2]() | [Sample 2]() |
-| [Sample 3]() | [Sample 3]() | [Sample 3]() |
+| Sample name | Set | Input | Output | Target |
+| --- | --- | --- | --- | --- |
+| appass_3.wav | Training | [Listen](https://drive.google.com/open?id=1gmQ8V9wFbAUAV5AM8QkxqoxOVLPbUfw8) | [Listen](https://drive.google.com/open?id=1HKf9dfWImJ-e0eT-dw1bbKsq8VC4nf4g) | [Listen](https://drive.google.com/open?id=1SQxxC2dRu91mx73j8MSMERIgUnx7kVsl)|
+| burg_gewitter.wav | Training | [Listen](https://drive.google.com/open?id=15rYy8qL_gp3rLF_4fm-QRuih3MTCofXl) | [Listen](https://drive.google.com/open?id=1V-joXpcqsWtF4S-L51OywUlmto_tdyxV) | [Listen](https://drive.google.com/open?id=1IYVbk7IyixIiH0uFRrw_S_ZrmXjIuC1R)|
+| debussy_cc_1.wav | Training | [Listen](https://drive.google.com/open?id=17fyumtCSC1og2rvgmik4mbKMPNHBK3L7) | [Listen](https://drive.google.com/open?id=1TKsxTnPFC4ODEz4FI0ipF-oOYPE9FzZG) | [Listen](https://drive.google.com/open?id=1UFg2Ac9Rd7GO7tsFEmlVfMUspMebEhm0)|
+| mond_3.wav | Training | [Listen](https://drive.google.com/open?id=1gEWUmFas2Hvr0aEyEo0H9bKoJINFCNpX) | [Listen](https://drive.google.com/open?id=1aXPDbh5kBd88sbuPNjeHFGJEs8KfYBiq) | [Listen](https://drive.google.com/open?id=1rQb34Ok4O_lv7cQuuy1pZeoYIQnbT8zj)|
+| schuim-3.wav | Validation | [Listen](https://drive.google.com/open?id=1lPyfKD916xSjYPQrCllJl8J2ir5pRnX9) | [Listen](https://drive.google.com/open?id=14ASh1EdKSbs92_tloGFw_0hxe7uZT-v5) | [Listen](https://drive.google.com/open?id=1UUtlogIO8Da5z5a-hr7mTe6ROcR5-qT5)|
+| ty_august.wav | Validation | [Listen](https://drive.google.com/open?id=1J0fdHTbFtkdArBwKArVJ4V72MR_IZlHO) | [Listen](https://drive.google.com/open?id=1xVc3i3l-9B1oaJU9XBl4wgU677AO04kP) | [Listen](https://drive.google.com/open?id=1RArFTlrJxr4dYpyi8U8HXf_lasMAgG11)|
 
 #### keyboard_acoustic_2_string_acoustic
 
-| Input | Prediction | Target |
-| --- | --- | --- |
-| [Sample 1](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | [Sample 1](https://drive.google.com/open?id=1HovCh4rNnPemSeQLVfdCdudaxFxY4mOt) | [Sample 1](https://drive.google.com/open?id=1mpaovd5T2IaXee2CyOWrUXEXRHg64LeB) |
-| [Sample 2]() | [Sample 2]() | [Sample 2]() |
-| [Sample 3]() | [Sample 3]() | [Sample 3]() |
+| Sample name | Set | Input | Output | Target |
+| --- | --- | --- | --- | --- |
+| appass_3.wav | Training | [Listen](https://drive.google.com/open?id=1gmQ8V9wFbAUAV5AM8QkxqoxOVLPbUfw8) | [Listen](https://drive.google.com/open?id=1aBS-AuphnoRmlYXRo2bHelujrskQTNDj) | [Listen](https://drive.google.com/open?id=1N9fPbd5Zro_jNDD6JXk-WTC6wBbd97zY)|
+| burg_gewitter.wav | Training | [Listen](https://drive.google.com/open?id=15rYy8qL_gp3rLF_4fm-QRuih3MTCofXl) | [Listen](https://drive.google.com/open?id=1JSS-52WLzqbWwkudZZrRa527aiKG6sff) | [Listen](https://drive.google.com/open?id=1vJ5DG2c8OOOfbwSwBViwhHF06yEqZf0G)|
+| debussy_cc_1.wav | Training | [Listen](https://drive.google.com/open?id=17fyumtCSC1og2rvgmik4mbKMPNHBK3L7) | [Listen](https://drive.google.com/open?id=1Fta2bpK0-6D4pebE2ThkZhZV-d8ANYPK) | [Listen](https://drive.google.com/open?id=1Soybu7DBMlG4YEwnjQGWyQwY1nz5CYmd)|
+| mond_3.wav | Training | [Listen](https://drive.google.com/open?id=1gEWUmFas2Hvr0aEyEo0H9bKoJINFCNpX) | [Listen](https://drive.google.com/open?id=1dE0GSydg9S_11RTXgBikBFUDGbKOjM4E) | [Listen](https://drive.google.com/open?id=1SHa7mTC_GDO50QLYIIilnHWsfZScvKmL)|
+| schuim-3.wav | Validation | [Listen](https://drive.google.com/open?id=1lPyfKD916xSjYPQrCllJl8J2ir5pRnX9) | [Listen](https://drive.google.com/open?id=116fvUwTUh-8_jdFC7Z-ZIrL__7UEPKqk) | [Listen](https://drive.google.com/open?id=1ajgHG5qydMhvNGb5PGePkIlnOD3OgVKq)|
+| ty_august.wav | Validation | [Listen](https://drive.google.com/open?id=1J0fdHTbFtkdArBwKArVJ4V72MR_IZlHO) | [Listen](https://drive.google.com/open?id=12QMyBx-1kCrVl0Hg4Yycx8SDQPnupS7S) | [Listen](https://drive.google.com/open?id=1TATbXKE5E24DU7WJtI4bcjepHda_dSG8)|
 
 #### keyboard_acoustic_2_synth_lead_synthetic
 
-| Input | Prediction | Target |
-| --- | --- | --- |
-| [Sample 1](https://drive.google.com/open?id=16SWVM3JSN_PM6pcNvPzWbiUYZs328u8F) | [Sample 1](https://drive.google.com/open?id=12exCypMTuDLVe_t6aEMq2gBXMFN46Xl1) | [Sample 1](https://drive.google.com/open?id=1VKfm4iGLnDPLn3BZ14yAcv5wFA6-bMms) |
-| [Sample 2]() | [Sample 2]() | [Sample 2]() |
-| [Sample 3]() | [Sample 3]() | [Sample 3]() |
+| Sample name | Set | Input | Output | Target |
+| --- | --- | --- | --- | --- |
+| appass_3.wav | Training | [Listen](https://drive.google.com/open?id=1gmQ8V9wFbAUAV5AM8QkxqoxOVLPbUfw8) | [Listen](https://drive.google.com/open?id=1jtQx_Fr9uZUlsf5pcMaiYsBXJ8ApdVzo) | [Listen](https://drive.google.com/open?id=19X7YbbL-6shckopKduCAC78uJJjdCGNq)|
+| burg_gewitter.wav | Training | [Listen](https://drive.google.com/open?id=15rYy8qL_gp3rLF_4fm-QRuih3MTCofXl) | [Listen](https://drive.google.com/open?id=1S5CA4y0HV5UPCdXd4v5pLM7if1gl8Tod) | [Listen](https://drive.google.com/open?id=1XKu6lsRErd-5BmmlKj3ZjWesw0ONqwTj)|
+| debussy_cc_1.wav | Training | [Listen](https://drive.google.com/open?id=17fyumtCSC1og2rvgmik4mbKMPNHBK3L7) | [Listen](https://drive.google.com/open?id=1JHHusjQ0cXZMAiXVd-52v2bpNiQTl7kA) | [Listen](https://drive.google.com/open?id=1cAVAShk9gm8fnL4R2EzHAqZyGdK5IWdf)|
+| mond_3.wav | Training | [Listen](https://drive.google.com/open?id=1gEWUmFas2Hvr0aEyEo0H9bKoJINFCNpX) | [Listen](https://drive.google.com/open?id=1C1JT2aR13ygUe45-aJQZi2qAF03O44R5) | [Listen](https://drive.google.com/open?id=1THVP1GQGmZqcWVgtclwtHECq-IMK8Qdc)|
+| schuim-3.wav | Validation | [Listen](https://drive.google.com/open?id=1lPyfKD916xSjYPQrCllJl8J2ir5pRnX9) | [Listen](https://drive.google.com/open?id=1yAG47W6iGH0zxZo-3yXCmMVHAYc6w3X1) | [Listen](https://drive.google.com/open?id=1upGPu3nEcFhvRdEOjPvpWLvw0Knn3pKv)|
+| ty_august.wav | Validation | [Listen](https://drive.google.com/open?id=1J0fdHTbFtkdArBwKArVJ4V72MR_IZlHO) | [Listen](https://drive.google.com/open?id=1WASFbuFo_sVxH_IsaslJnzPIyi-UOo68) | [Listen](https://drive.google.com/open?id=1GvPLym-R5XaIcoEpFolHhyZ0PZIh0ClR)|
 
 ### Trained models
 
