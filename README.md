@@ -493,7 +493,7 @@ The results from the epoch 50 to the epoch 100 have minimal changes, but the per
 
 ### Audios from the real world
 
-Due to the limited instrument diversity during training (only one type of piano), a subjective listenting test on the [audios from the real world](#audios-from-the-real-world) reveals that the same instrument recorded in a different setting can also present a challenging scenario. That being said, the generalization of the networks allow for performing the Timbre Transfer operation from real world pianos into the 3 instruments considered in this work. 
+Due to the limited instrument diversity during training (only one type of keyboard), a subjective listenting test on the [audios from the real world](#audios-from-the-real-world) reveals that the same instrument recorded in a different setting can also present a challenging scenario. That being said, the generalization of the networks allow for performing the Timbre Transfer operation from real world pianos into the 3 instruments considered in this work. 
 
 Artifacts appear specially when there are multiple notes being played at once and when there are sudden intensity changes. In general, the target instrument can be recognized and the audio quality is reasonably similar to the output audios from the dataset. 
 
