@@ -1,7 +1,7 @@
 # Pix2Pix Timbre Transfer
 Musical Timbre Transfer using the Pix2Pix architecture. Video documentation for the challenge submission can be found here (in Spanish):
  
-![IMAGE ALT TEXT HERE](docs/video-screenshot.jpg)](https://www.youtube.com/watch?v=YOUTUBE_VIDEO_ID_HERE)
+![IMAGE ALT TEXT HERE](docs/video_miniature.PNG)](https://www.youtube.com/watch?v=QoH9Lh0YSt0)
 
 # Table of contents
 
