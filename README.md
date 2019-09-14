@@ -388,11 +388,13 @@ Input spectrogram | Prediction over 100 epochs | True target
 | <img src="docs/results/keyboard_acoustic_2_any/synth_lead_synthetic/spectrogram_input.png" width="200" height="200"> | <img src="docs/results/keyboard_acoustic_2_any/synth_lead_synthetic/prediction.gif" width="340" height="256"> | <img src="docs/results/keyboard_acoustic_2_any/synth_lead_synthetic/spectrogram_true.png" width="200" height="200"> |
 Input spectrogram | Prediction over 100 epochs | True target
 
-### Audios
+### Audios from the dataset
 
->NOTE: It is highly recommended to donwload the test_results folder from [this Google Drive link](https://drive.google.com/open?id=1wuha0W6TY2Mi4PX7mPe54ECnM6DWZNmL) to get all the audios at once. 
+The following tables are provided to listen to the results one by one. The results are conformed by 6 samples, which are displayed in terms of Input, Output and Target. 4 samples are from the Training set and 2 from the Validation set. 
 
-However, the following tables are provided to listen to the results one by one. The results are conformed by 6 samples, which are displayed in terms of Input, Output and Target. 4 samples are from the Training set and 2 from the Validation set. 
+```
+NOTE: It is highly recommended to donwload the ``test_results`` folder from [this Google Drive link](https://drive.google.com/open?id=1wuha0W6TY2Mi4PX7mPe54ECnM6DWZNmL) to get all the audios at once. 
+```
 
 #### keyboard_acoustic_2_guitar_acoustic
 
@@ -438,6 +440,21 @@ However, the following tables are provided to listen to the results one by one. 
 | schuim-3.wav | Validation | [Listen](https://drive.google.com/open?id=1lPyfKD916xSjYPQrCllJl8J2ir5pRnX9) | [Listen](https://drive.google.com/open?id=1q5PwNpLO2QHcwEouklHofw3VGCbuIJ20), [Listen](https://drive.google.com/open?id=1HC87fpM3tvs8pIYR6vs1uiBGBN2cepd-), [Listen](https://drive.google.com/open?id=1lbZSqWg1tHEtP3zApx78HBT3tJj5oN97) | [Listen](https://drive.google.com/open?id=1UUtlogIO8Da5z5a-hr7mTe6ROcR5-qT5), [Listen](https://drive.google.com/open?id=1ajgHG5qydMhvNGb5PGePkIlnOD3OgVKq), [Listen](https://drive.google.com/open?id=1upGPu3nEcFhvRdEOjPvpWLvw0Knn3pKv)|
 | ty_august.wav | Validation | [Listen](https://drive.google.com/open?id=1J0fdHTbFtkdArBwKArVJ4V72MR_IZlHO) | [Listen](https://drive.google.com/open?id=1QnYmmmlqjX7y-ECweMZKSn_rDwmEz-mo), [Listen](https://drive.google.com/open?id=1x_EpVm3c9XRJVuz8fKmUcqXSJhW9vcxj), [Listen](https://drive.google.com/open?id=1VAR78skrSS_GCRS0hspTG9uQV9hmJy2E) | [Listen](https://drive.google.com/open?id=1RArFTlrJxr4dYpyi8U8HXf_lasMAgG11), [Listen](https://drive.google.com/open?id=1TATbXKE5E24DU7WJtI4bcjepHda_dSG8), [Listen](https://drive.google.com/open?id=1GvPLym-R5XaIcoEpFolHhyZ0PZIh0ClR)|
 
+### Audios from the real world
+
+```
+NOTE: Again, it is highly recommended to donwload the ``real_world_results`` folder from [this Google Drive link](https://drive.google.com/open?id=1jn5wWAwVl6YVnJ1idR9NvtdXe48TNReT) to get all the audios at once. 
+```
+
+Since the audios presented here are real world recordings, there is no target audio to compare. Therefore, this section is intended entirely for subjective evaluation. In this case, the entire piece has been exported instead of 10 second excerpts to allow the listener to check the audio quality in different parts of the piece.
+
+| Sample name | Lenght (mm:ss) | Input | Output (guitar) | Output (string) | Output (synth_lead) |
+| --- | --- | --- | --- | --- |
+| Chopin - Nocturne.mp3 | 04:13 | [Listen](https://drive.google.com/open?id=1oVUVL-kBQhf7c2qEvU7yLsZUoJ-XndUB) | [Listen](https://drive.google.com/open?id=1_kilFAc1XyWEbPP-upUciu0PXLzHOdsS) | [Listen](https://drive.google.com/open?id=10lD0YNaRVmuRq5QEhytYkd-BnlKHte8u) | [Listen](https://drive.google.com/open?id=1HM0L-ktMEsH-SgAbDY0uPDIGUKgWei0R) | 
+| Pachelbel Canon in D - Solo Piano.mp3 | 03:22 | [Listen](https://drive.google.com/open?id=1HJ6ndxh2bj4E9gpiC-dZ8otrJi7O-nvm) | [Listen](https://drive.google.com/open?id=1GJOcbI4bwWREh4XN4iuIpwK5ZRtn6NJm) | [Listen](https://drive.google.com/open?id=19ZXd1Q6Dw1ZsvdUiEyOrJVMhZMTJeplO) | [Listen](https://drive.google.com/open?id=1TLZrIWIt3BA6XJ9ljo8QkuE9-c6JmtOI) | 
+| Sunrise In Meteora - Piano Solo.mp3 | 03:52 | [Listen](https://drive.google.com/open?id=1dPXEAufdOBEb4mCiHRJeuJ3siMGrN8Zy) | [Listen](https://drive.google.com/open?id=1pRY0ufwa_hqYvEV7BR201gAOEEWgaMRT) | [Listen](https://drive.google.com/open?id=1g8VwN3NoMvSGO0RyV61pkiag4Ssx6lDb) | [Listen](https://drive.google.com/open?id=1UMQn60_vcR0_6Kz9RQ3LFkDFMwUHK2lv) | 
+| Sweet Memories - Piano Solo.mp3 | 03:34 | [Listen](https://drive.google.com/open?id=1JvxbMdfP6sRPitFTvl6n46PXjdRLyrTb) | [Listen](https://drive.google.com/open?id=1qtk4GqOO0ELuFj5VR_2rWbCS1l_Lo8Za) | [Listen](https://drive.google.com/open?id=1NLfxx2qYLiYPE0oSTI8sHkXurXGuvI8J) | [Listen](https://drive.google.com/open?id=1BKMM42w_Qk01MwaBRfdOGE2bOi-Ux2kE) | 
+
 ### Trained models
 
 The ``/models`` folder of this repository contains the training history and the learning rate search results in separate directories for each instrument pair.
@@ -470,11 +487,23 @@ $ python predict_multitarget.py --model <GENERATOR_WEIGHTS>
 
 The system presented in this work can perform the Timbre Transfer problem and achieve reasonable results. However, it is obvious that this system has some limitations and that the results are still far from being usable in a professional music production environment. In this section, the [Results](#results) presented above are discussed.
 
-An observation is that the audios from the first training epochs sound like an interpolation between the original instrument and the target, but present very noticeable distortion that is not pleasurable for the listener. This is specially true in the case of ``keyboard_acoustic_2_string_acoustic``. 
+### Audios from the dataset
+
+The [audios from the dataset](#audios-from-the-dataset) are analyzed here according to the intermediate and final results. For this, the epochs 1, 50 and 100 are considered. 
+
+The first training epochs sound like an interpolation between the original instrument and the target, but present very noticeable distortion that is not pleasurable for the listener. This is specially true in the case of ``keyboard_acoustic_2_string_acoustic``. 
 
 In the epoch 50, the output sounds similar to the target with still notable artifacts. The models have learned characteristics from the target instrument that are present in the output. For example, the model ``keyboard_acoustic_2_guitar_acoustic`` introduces the sound of the guitar strings even in places where the original melody from the keyboard does not produce such noises. Also, in the case of ``keyboard_acoustic_2_synth_lead_synthetic``, the output sound presents the high frequency harmonics sustained for a longer period of time than in the original melody. 
 
 The results from the epoch 50 to the epoch 100 have minimal changes, but the perceptual implications of them are noticeable. In all cases, some of the undesired noises and distortions from earlier training epochs are reduced. As a result, the output sound is perceptually more natural, but still presents significant artifacts when compared to the ground truth target.
+
+### Audios from the real world
+
+Due to the limited instrument diversity during training (only one type of piano), a subjective listenting test on the [audios from the real world](#audios-from-the-real-world) reveals that the same instrument recorded in a different setting can also present a challenging scenario. That being said, the generalization of the networks allow for performing the Timbre Transfer operation from real world pianos into the 3 instruments considered in this work. 
+
+Artifacts appear specially when there are multiple notes being played at once and when there are sudden intensity changes. In general, the target instrument can be recognized and the audio quality is reasonably similar to the output audios from the dataset. 
+
+Further research applying one or more proposals from the section [Future work](#future-work) may be required to refine the results.
 
 <!-- ### Generator only vs Fixed vs Conditioned
 The most interesting finding is that the comparison between the models over the dataset leads to the *generator only* model to achive the best performance. This in possibly due to overfitting, since the instrument diversity is very limited. In a real application, the best performance is always achieved by the *conditioned* model. -->
