@@ -1,8 +1,6 @@
 # Pix2Pix Timbre Transfer
 Musical Timbre Transfer using the Pix2Pix architecture. Video documentation for the challenge submission can be found here (in Spanish):
  
-<!-- ![IMAGE ALT TEXT HERE](docs/video_miniature.PNG)](https://www.youtube.com/watch?v=QoH9Lh0YSt0) -->
-
 <p align="center">
 <a href="https://www.youtube.com/watch?v=QoH9Lh0YSt0" target="_blank">
 <img src="docs/video_miniature.PNG">
@@ -154,7 +152,7 @@ Individual models
 * [keyboard_acoustic_2_synth_lead_synthetic](https://drive.google.com/open?id=1LuriwjzxN3C5SJzeDFZllEOMtjZcUDYf)
 * [keyboard_acousitc_2_any](https://drive.google.com/open?id=15qzaeFJ_vpRqPR_kevyOLIKobWQ6xhqC)
 
-To use a pretrained model simply run the ``predict.py`` script specifying the path to the trained model, the location of the input audio and the name of the output audio.
+To use a pretrained model simply run the ``predict.py`` script specifying the path to the trained model (i.e. .h5 weights file), the location of the input audio and the name of the output audio.
 ```
 $ python predict.py --model <GENERATOR_WEIGHTS> 
                     --input <INPUT_AUDIO>
@@ -442,7 +440,7 @@ The following tables are provided to listen to the results one by one. The resul
 
 >NOTE: Again, it is highly recommended to donwload the ``real_world_results`` folder from [this Google Drive link](https://drive.google.com/open?id=1jn5wWAwVl6YVnJ1idR9NvtdXe48TNReT) to get all the audios at once. 
 
-Since the audios presented here are real world recordings, there is no target audio to compare. Therefore, this section is intended entirely for subjective evaluation. In this case, the entire piece has been exported instead of 10 second excerpts to allow the listener to check the audio quality in different parts of the piece.
+Since the audios presented here are real world recordings, there is no target audio to compare with the output. Therefore, this section is intended entirely for subjective evaluation. In this case, the entire piece has been exported instead of 10 second excerpts to allow the listener to check the audio quality in different parts of the piece.
 
 | Sample name | Length | Input | Output (guitar) | Output (string) | Output (synth_lead) |
 | --- | --- | --- | --- | --- | --- |
@@ -463,7 +461,7 @@ Individual models
 * [keyboard_acoustic_2_synth_lead_synthetic](https://drive.google.com/open?id=1LuriwjzxN3C5SJzeDFZllEOMtjZcUDYf)
 * [keyboard_acousitc_2_any](https://drive.google.com/open?id=15qzaeFJ_vpRqPR_kevyOLIKobWQ6xhqC)
 
-To use a pretrained model simply run the ``predict.py`` script specifying the path to the trained model, the location of the input audio and the name of the output audio.
+To use a pretrained model simply run the ``predict.py`` script specifying the path to the trained model (i.e. .h5 weights file), the location of the input audio and the name of the output audio.
 ```
 $ python predict.py --model <GENERATOR_WEIGHTS> 
                     --input <INPUT_AUDIO>
