@@ -444,8 +444,8 @@ The following tables are provided to listen to the results one by one. The resul
 
 Since the audios presented here are real world recordings, there is no target audio to compare. Therefore, this section is intended entirely for subjective evaluation. In this case, the entire piece has been exported instead of 10 second excerpts to allow the listener to check the audio quality in different parts of the piece.
 
-| Sample name | Lenght (mm:ss) | Input | Output (guitar) | Output (string) | Output (synth_lead) |
-| --- | --- | --- | --- | --- |
+| Sample name | Length | Input | Output (guitar) | Output (string) | Output (synth_lead) |
+| --- | --- | --- | --- | --- | --- |
 | Chopin - Nocturne.mp3 | 04:13 | [Listen](https://drive.google.com/open?id=1oVUVL-kBQhf7c2qEvU7yLsZUoJ-XndUB) | [Listen](https://drive.google.com/open?id=1_kilFAc1XyWEbPP-upUciu0PXLzHOdsS) | [Listen](https://drive.google.com/open?id=10lD0YNaRVmuRq5QEhytYkd-BnlKHte8u) | [Listen](https://drive.google.com/open?id=1HM0L-ktMEsH-SgAbDY0uPDIGUKgWei0R) | 
 | Pachelbel Canon in D - Solo Piano.mp3 | 03:22 | [Listen](https://drive.google.com/open?id=1HJ6ndxh2bj4E9gpiC-dZ8otrJi7O-nvm) | [Listen](https://drive.google.com/open?id=1GJOcbI4bwWREh4XN4iuIpwK5ZRtn6NJm) | [Listen](https://drive.google.com/open?id=19ZXd1Q6Dw1ZsvdUiEyOrJVMhZMTJeplO) | [Listen](https://drive.google.com/open?id=1TLZrIWIt3BA6XJ9ljo8QkuE9-c6JmtOI) | 
 | Sunrise In Meteora - Piano Solo.mp3 | 03:52 | [Listen](https://drive.google.com/open?id=1dPXEAufdOBEb4mCiHRJeuJ3siMGrN8Zy) | [Listen](https://drive.google.com/open?id=1pRY0ufwa_hqYvEV7BR201gAOEEWgaMRT) | [Listen](https://drive.google.com/open?id=1g8VwN3NoMvSGO0RyV61pkiag4Ssx6lDb) | [Listen](https://drive.google.com/open?id=1UMQn60_vcR0_6Kz9RQ3LFkDFMwUHK2lv) | 
