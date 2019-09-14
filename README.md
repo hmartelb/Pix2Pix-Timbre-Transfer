@@ -152,7 +152,7 @@ Individual models
 * [keyboard_acoustic_2_synth_lead_synthetic](https://drive.google.com/open?id=1LuriwjzxN3C5SJzeDFZllEOMtjZcUDYf)
 * [keyboard_acousitc_2_any](https://drive.google.com/open?id=15qzaeFJ_vpRqPR_kevyOLIKobWQ6xhqC)
 
-To use a pretrained model simply run the ``predict.py`` script specifying the path to the trained model (i.e. .h5 weights file), the location of the input audio and the name of the output audio.
+To use a pretrained model simply run the ``predict.py`` script specifying the path to the trained generator model (i.e. .h5 weights file), the location of the input audio and the name of the output audio.
 ```
 $ python predict.py --model <GENERATOR_WEIGHTS> 
                     --input <INPUT_AUDIO>
@@ -461,7 +461,7 @@ Individual models
 * [keyboard_acoustic_2_synth_lead_synthetic](https://drive.google.com/open?id=1LuriwjzxN3C5SJzeDFZllEOMtjZcUDYf)
 * [keyboard_acousitc_2_any](https://drive.google.com/open?id=15qzaeFJ_vpRqPR_kevyOLIKobWQ6xhqC)
 
-To use a pretrained model simply run the ``predict.py`` script specifying the path to the trained model (i.e. .h5 weights file), the location of the input audio and the name of the output audio.
+To use a pretrained model simply run the ``predict.py`` script specifying the path to the trained generator model (i.e. .h5 weights file), the location of the input audio and the name of the output audio.
 ```
 $ python predict.py --model <GENERATOR_WEIGHTS> 
                     --input <INPUT_AUDIO>
