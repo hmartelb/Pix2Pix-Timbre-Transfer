@@ -10,13 +10,15 @@ import matplotlib.pyplot as plt
 from scipy.io.wavfile import write as write_wav
 
 class NoteSynthesizer():
-    def __init__(self, dataset_path, sr=44100, transpose=0, leg_stac=.9, velocities=np.arange(0,128), preset=0, preload=True):
+    def __init__(self, dataset_path, sr=44100, transpose=0, leg_stac=.9, velocities=np.arange(0,128), preset=0, preload=True, verbose=1):
         self.dataset_path = dataset_path
         self.sr = sr
         self.transpose = transpose
         self.leg_stac = leg_stac
         self.velocities = velocities
         self.preset = preset
+
+        self.verbose = verbose
 
         self.preload = preload
 
@@ -30,7 +32,8 @@ class NoteSynthesizer():
 
     def preload_notes(self, instrument, source_type, preset=None):
         preset = preset if(preset is not None) else self.preset
-        print("Preloading notes for " + instrument + "_" + source_type + "_" + str(preset).zfill(3))
+        if(self.verbose):
+            print("Preloading notes for " + instrument + "_" + source_type + "_" + str(preset).zfill(3))
         self.notes = {}
         for n in range(22, 108):
             for v in self.velocities:
@@ -64,7 +67,8 @@ class NoteSynthesizer():
             envelope = np.exp(-np.arange(len(note)-decay_ind)/3000.)
             note[decay_ind:] = np.multiply(note[decay_ind:],envelope)
         except:
-            print('Note not fonund', note_filename)
+            if(self.verbose):
+                print('Note not fonund', note_filename)
             note = np.zeros(duration)
         return note[:duration]
 
