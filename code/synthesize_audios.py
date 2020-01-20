@@ -26,10 +26,45 @@ if __name__ == '__main__':
     assert os.path.isdir(args.midi_path), 'MIDI Dataset not found'
 
     instruments = [
-        {'name': 'guitar', 'source_type': 'acoustic', 'preset': 0},
-        {'name': 'keyboard', 'source_type': 'acoustic', 'preset': 0},
-        {'name': 'string', 'source_type': 'acoustic', 'preset': 0},
-        {'name': 'synth_lead', 'source_type': 'synthetic', 'preset': 0}
+        {'name': 'bass', 'source_type': 'acoustic'},
+        {'name': 'bass', 'source_type': 'electronic'},
+        {'name': 'bass', 'source_type': 'synthetic'},
+        
+        {'name': 'brass', 'source_type': 'acoustic'},
+        {'name': 'brass', 'source_type': 'electronic'},
+        # {'name': 'brass', 'source_type': 'synthetic'},
+        
+        {'name': 'flute', 'source_type': 'acoustic'},
+        {'name': 'flute', 'source_type': 'electronic'},
+        {'name': 'flute', 'source_type': 'synthetic'},
+
+        {'name': 'guitar', 'source_type': 'acoustic'},
+        {'name': 'guitar', 'source_type': 'electronic'},
+        {'name': 'guitar', 'source_type': 'synthetic'},
+
+        {'name': 'keyboard', 'source_type': 'acoustic'},
+        {'name': 'keyboard', 'source_type': 'electronic'},
+        {'name': 'keyboard', 'source_type': 'synthetic'},
+
+        {'name': 'mallet', 'source_type': 'acoustic'},
+        {'name': 'mallet', 'source_type': 'electronic'},
+        {'name': 'mallet', 'source_type': 'synthetic'},
+
+        {'name': 'organ', 'source_type': 'acoustic'},
+        {'name': 'organ', 'source_type': 'electronic'},
+        # {'name': 'organ', 'source_type': 'synthetic'},
+
+        {'name': 'reed', 'source_type': 'acoustic'},
+        {'name': 'reed', 'source_type': 'electronic'},
+        {'name': 'reed', 'source_type': 'synthetic'},
+
+        {'name': 'string', 'source_type': 'acoustic'},
+        {'name': 'string', 'source_type': 'electronic'},
+        # {'name': 'string', 'source_type': 'synthetic'},
+
+        # {'name': 'synth_lead', 'source_type': 'synthetic'},
+        # {'name': 'synth_lead', 'source_type': 'electronic'},
+        {'name': 'synth_lead', 'source_type': 'synthetic'}
     ]
     
     midifiles = list(files_within(args.midi_path, '*.mid'))
@@ -40,16 +75,33 @@ if __name__ == '__main__':
     print("MIDI files: \t", len(midifiles))
     print()
 
+    #
+    # Note qualities according to the NSynth specification:
+    # https://magenta.tensorflow.org/datasets/nsynth#note-qualities
+    #
+    # 0	    bright	        A large amount of high frequency content and strong upper harmonics.
+    # 1	    dark	        A distinct lack of high frequency content, giving a muted and bassy sound. Also sometimes described as ‘Warm’.
+    # 2	    distortion	    Waveshaping that produces a distinctive crunchy sound and presence of many harmonics. Sometimes paired with non-harmonic noise.
+    # 3	    fast_decay	    Amplitude envelope of all harmonics decays substantially before the ‘note-off’ point at 3 seconds.
+    # 4	    long_release	Amplitude envelope decays slowly after the ‘note-off’ point, sometimes still present at the end of the sample 4 seconds.
+    # 5	    multiphonic	    Presence of overtone frequencies related to more than one fundamental frequency.
+    # 6	    nonlinear_env	Modulation of the sound with a distinct envelope behavior different than the monotonic decrease of the note. Can also include filter envelopes as well as dynamic envelopes.
+    # 7	    percussive	    A loud non-harmonic sound at note onset.
+    # 8	    reverb	        Room acoustics that were not able to be removed from the original sample. 
+    #
+    # for note_quality in range(0,9): 
+    note_quality = 0
     for instrument in instruments:
         synth = NoteSynthesizer(
                                     dataset_path=args.nsynth_path, 
                                     sr=NSYNTH_SAMPLE_RATE, 
                                     velocities=NSYNTH_VELOCITIES, 
-                                    transpose=float(args.transpose)
+                                    transpose=float(args.transpose),
+                                    verbose=0
                                 )
         synth.preload_notes(instrument=instrument['name'], source_type=instrument['source_type'])
         
-        instrument_folder = instrument['name']+'_'+instrument['source_type']
+        instrument_folder = instrument['name']+'_'+instrument['source_type']+'_'+str(note_quality).zfill(3)
         init_directory(os.path.join(args.audios_path, instrument_folder))
     
         for mid in midifiles:
@@ -65,7 +117,7 @@ if __name__ == '__main__':
                                                     sequence=str(mid),
                                                     instrument=instrument['name'],
                                                     source_type=instrument['source_type'],
-                                                    preset=instrument['preset'],
+                                                    preset=note_quality,
                                                     playback_speed=float(args.playback_speed),
                                                     duration_scale=float(args.duration_rate),
                                                 )
