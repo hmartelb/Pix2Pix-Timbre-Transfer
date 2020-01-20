@@ -114,7 +114,9 @@ class NoteSynthesizer():
             # elif(end_sample > len(data)):
             #     data[start_sample:] = note[0:len(data)-start_sample]
 
-        data /= np.max(np.abs(data)) 
+        norm_factor = np.max(np.abs(data)) 
+        if(norm_factor > 0):
+            data /= norm_factor
         return data, self.sr 
 
 if __name__ == "__main__":
