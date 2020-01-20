@@ -31,7 +31,7 @@ if __name__ == '__main__':
         {'name': 'bass', 'source_type': 'synthetic'},
         
         {'name': 'brass', 'source_type': 'acoustic'},
-        {'name': 'brass', 'source_type': 'electronic'},
+        # {'name': 'brass', 'source_type': 'electronic'}, # RENDERS SILENCE ONLY!!
         # {'name': 'brass', 'source_type': 'synthetic'},
         
         {'name': 'flute', 'source_type': 'acoustic'},
