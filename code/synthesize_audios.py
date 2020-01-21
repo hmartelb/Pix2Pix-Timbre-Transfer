@@ -35,8 +35,8 @@ if __name__ == '__main__':
         # {'name': 'brass', 'source_type': 'synthetic'},
         
         {'name': 'flute', 'source_type': 'acoustic'},
-        {'name': 'flute', 'source_type': 'electronic'},
-        {'name': 'flute', 'source_type': 'synthetic'},
+        # {'name': 'flute', 'source_type': 'electronic'},# RENDERS SILENCE ONLY!!
+        # {'name': 'flute', 'source_type': 'synthetic'},# RENDERS SILENCE ONLY!!
 
         {'name': 'guitar', 'source_type': 'acoustic'},
         {'name': 'guitar', 'source_type': 'electronic'},
@@ -44,22 +44,22 @@ if __name__ == '__main__':
 
         {'name': 'keyboard', 'source_type': 'acoustic'},
         {'name': 'keyboard', 'source_type': 'electronic'},
-        {'name': 'keyboard', 'source_type': 'synthetic'},
+        # {'name': 'keyboard', 'source_type': 'synthetic'},# RENDERS SILENCE ONLY!!
 
         {'name': 'mallet', 'source_type': 'acoustic'},
         {'name': 'mallet', 'source_type': 'electronic'},
         {'name': 'mallet', 'source_type': 'synthetic'},
 
-        {'name': 'organ', 'source_type': 'acoustic'},
+        # {'name': 'organ', 'source_type': 'acoustic'},# RENDERS SILENCE ONLY!!
         {'name': 'organ', 'source_type': 'electronic'},
         # {'name': 'organ', 'source_type': 'synthetic'},
 
         {'name': 'reed', 'source_type': 'acoustic'},
-        {'name': 'reed', 'source_type': 'electronic'},
-        {'name': 'reed', 'source_type': 'synthetic'},
+        # {'name': 'reed', 'source_type': 'electronic'},# RENDERS SILENCE ONLY!!
+        # {'name': 'reed', 'source_type': 'synthetic'},# RENDERS SILENCE ONLY!!
 
         {'name': 'string', 'source_type': 'acoustic'},
-        {'name': 'string', 'source_type': 'electronic'},
+        # {'name': 'string', 'source_type': 'electronic'}, # RENDERS SILENCE ONLY!!
         # {'name': 'string', 'source_type': 'synthetic'},
 
         # {'name': 'synth_lead', 'source_type': 'synthetic'},
