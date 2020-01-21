@@ -30,6 +30,9 @@ if __name__ == "__main__":
             mag_sliced = slice_magnitude(mag, mag.shape[0])
             
             print(name, mag_sliced.shape[0])
+            # print(mag_sliced.shape)
+            
+
             for i in range(mag_sliced.shape[0]):
                 out_name = os.path.join(features_dir, name+'_'+str(i).zfill(3)+'.npy')
                 if(not os.path.isfile(out_name)):
