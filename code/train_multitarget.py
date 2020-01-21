@@ -13,10 +13,10 @@ import pandas as pd
 
 import tensorflow as tf
 from config import CHECKPOINT_DIR, IMG_DIM, OUTPUT_PATH, TEST_AUDIOS_PATH
-from data import (DataGeneratorMultiTarget, amplitude_to_db, db_to_amplitude,
-                  forward_transform, init_directory, inverse_transform,
-                  join_magnitude_slices, load_audio, slice_magnitude,
-                  write_audio)
+from data import (DataGeneratorAny2Any, DataGeneratorMultiTarget,
+                  amplitude_to_db, db_to_amplitude, forward_transform,
+                  init_directory, inverse_transform, join_magnitude_slices,
+                  load_audio, slice_magnitude, write_audio)
 from losses import discriminator_loss, generator_loss, l1_loss
 from model import Discriminator, Generator
 
@@ -164,7 +164,7 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
     generator_optimizer = tf.keras.optimizers.Adam(gen_lr)
     discriminator_optimizer = tf.keras.optimizers.Adam(disc_lr)
 
-    model_name = data['training'].origin+'_2_any'
+    model_name = 'any_2_any'
     checkpoint_prefix = os.path.join(CHECKPOINT_DIR, model_name)
     if(not os.path.isdir(checkpoint_prefix)):
         os.makedirs(checkpoint_prefix)
@@ -173,9 +173,17 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
             generator.load_weights(os.path.join(checkpoint_prefix, 'generator.h5'), by_name=True)
             print('Generator weights restorred from ' + checkpoint_prefix)
 
+        elif(os.path.isfile(os.path.join(checkpoint_prefix, 'baseline_generator.h5'))):
+            generator.load_weights(os.path.join(checkpoint_prefix, 'baseline_generator.h5'), by_name=True)
+            print('Generator baseline weights restorred from ' + checkpoint_prefix)
+
         if(os.path.isfile(os.path.join(checkpoint_prefix, 'discriminator.h5'))):
             discriminator.load_weights(os.path.join(checkpoint_prefix, 'discriminator.h5'), by_name=True)
             print('Discriminator weights restorred from ' + checkpoint_prefix)
+
+        elif(os.path.isfile(os.path.join(checkpoint_prefix, 'baseline_discriminator.h5'))):
+            discriminator.load_weights(os.path.join(checkpoint_prefix, 'baseline_discriminator.h5'), by_name=True)
+            print('Discriminator baseline weights restorred from ' + checkpoint_prefix)
 
     # Get the number of batches in the training set
     epoch_size = data['training'].__len__()
@@ -300,8 +308,8 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('--dataset_path', required=True)
-    ap.add_argument('--origin', required=True)
-    ap.add_argument('--target', required=True)
+    # ap.add_argument('--origin', required=True)
+    # ap.add_argument('--target', required=True)
     ap.add_argument('--gpu', required=False, default='0')
     ap.add_argument('--epochs', required=False, default=100)
     ap.add_argument('--epoch_offset', required=False, default=0)
@@ -318,10 +326,33 @@ if __name__ == '__main__':
     os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu
     os.environ['TF_ENABLE_AUTO_MIXED_PRECISION'] = '1'
 
+    # data = {
+    #     'training': DataGeneratorMultiTarget(
+    #                                             origin=args.origin, 
+    #                                             target=ast.literal_eval(args.target),
+    #                                             base_path=args.dataset_path,
+    #                                             batch_size=int(args.batch_size),
+    #                                             img_dim=IMG_DIM,
+    #                                             validation_split=float(args.validation_split),
+    #                                             is_training=True,
+    #                                             scale_factor=1
+    #                                         ),
+
+    #     'validation': DataGeneratorMultiTarget(
+    #                                             origin=args.origin, 
+    #                                             target=ast.literal_eval(args.target),
+    #                                             base_path=args.dataset_path,
+    #                                             batch_size=int(args.batch_size),
+    #                                             img_dim=IMG_DIM,
+    #                                             validation_split=float(args.validation_split),
+    #                                             is_training=False,
+    #                                             scale_factor=1,
+    #                                             shuffle=False
+    #                                         )
+    # }
+
     data = {
-        'training': DataGeneratorMultiTarget(
-                                                origin=args.origin, 
-                                                target=ast.literal_eval(args.target),
+        'training': DataGeneratorAny2Any(
                                                 base_path=args.dataset_path,
                                                 batch_size=int(args.batch_size),
                                                 img_dim=IMG_DIM,
@@ -330,9 +361,7 @@ if __name__ == '__main__':
                                                 scale_factor=1
                                             ),
 
-        'validation': DataGeneratorMultiTarget(
-                                                origin=args.origin, 
-                                                target=ast.literal_eval(args.target),
+        'validation': DataGeneratorAny2Any(
                                                 base_path=args.dataset_path,
                                                 batch_size=int(args.batch_size),
                                                 img_dim=IMG_DIM,
