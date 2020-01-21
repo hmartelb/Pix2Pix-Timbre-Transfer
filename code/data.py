@@ -247,3 +247,95 @@ class DataGeneratorMultiTarget(tf.keras.utils.Sequence):
         'Updates indexes after each epoch'
         if self.shuffle:
             np.random.shuffle(self.filenames)
+
+class DataGeneratorAny2Any(tf.keras.utils.Sequence):
+    def __init__(self, base_path, batch_size=1, img_dim=(256,256,1), validation_split=0.9, is_training=True, scale_factor=1.0, shuffle=True):
+        self.img_dim = img_dim
+        self.batch_size = batch_size
+        
+        self.validation_split = validation_split
+        self.is_training = is_training
+        self.scale_factor = scale_factor
+
+        self.base_path = base_path if(type(base_path) is list) else [base_path]
+
+        self.instruments = self.__get_instruments()
+        self.filenames = self.__get_filenames()
+        assert len(self.filenames) > 0, 'Filenames is empty' 
+
+        self.shuffle = shuffle
+        self.on_epoch_end()
+
+    def __len__(self):
+        'Denotes the number of batches per epoch'
+        return int(np.floor(len(self.filenames) / self.batch_size))
+
+    def __getitem__(self, index):
+        'Generate one batch of data'        
+        batch_filenames = self.filenames[index*self.batch_size:(index+1)*self.batch_size]                   # Generate indexes of the batch
+        batch = self.__data_generation(batch_filenames)                                                     # Generate data
+        return batch
+
+    def get_empty_batch(self):
+        x = np.zeros((self.batch_size, self.img_dim[0], self.img_dim[1], 2))
+        y = np.zeros((self.batch_size, *self.img_dim))
+        return x,y 
+
+    def get_random_batch(self):
+        random_idx = np.random.randint(self.__len__())
+        return self.__getitem__(random_idx)
+
+    def __get_instruments(self):
+        instruments = [ f for f in os.listdir(self.base_path) if os.path.isdir(f) ]
+        return instruments
+
+    def __get_style(self, target):
+        style = np.random.choice(self.filenames)['name']        # From outside the batch (pick from all filenames)
+        style.replace('instrument_placeholder', target)         # Make it match the target
+        return style 
+
+    def __data_generation(self, batch_filenames):
+        'Generates data containing batch_size samples'                                  
+        x = np.empty((self.batch_size, self.img_dim[0], self.img_dim[1], 2))
+        y = np.empty((self.batch_size, *self.img_dim))
+        # Generate data
+        for i, filename in enumerate(batch_filenames):
+            style = self.__get_style(filename['target'])                                           
+            original = filename['name'].replace('instrument_placeholder', filename['origin'])
+            output = filename['name'].replace('instrument_placeholder', filename['target'])
+
+            x[i,:,:,0:1] = np.load(original)
+            x[i,:,:,1:2] = np.load(style)
+            y[i,] = np.load(output) 
+
+            if(self.scale_factor != 1):
+                x[i,] *= self.scale_factor
+                y[i,] *= self.scale_factor
+            # Now images should be scaled in the range [0,1]. Make them [-1,1]
+            x[i,] = x[i,] * 2 - 1
+            y[i,] = y[i,] * 2 - 1
+        return x,y
+
+    def __get_filenames(self):
+        origin_filenames = []
+        for base_path in self.base_path:
+            origin_temp = []
+            origin_temp.append(*[os.path.join(base_path, 'instrument_placeholder', f) for f in os.listdir(os.path.join(base_path, self.instruments[0]))]) # Arbitrary choice [0]
+            if(self.is_training):
+                origin_temp = origin_temp[0:int(self.validation_split*len(origin_temp))]
+            else:
+                origin_temp = origin_temp[int(self.validation_split*len(origin_temp)):]
+            origin_filenames += origin_temp
+        
+        filenames = []
+        for f in origin_filenames:
+            for o in self.instruments:
+                for t in self.instruments:
+                    if(o != t):
+                        filenames.append({'name': f, 'origin': o, 'target': t})     
+        return filenames
+
+    def on_epoch_end(self):
+        'Updates indexes after each epoch'
+        if self.shuffle:
+            np.random.shuffle(self.filenames)
