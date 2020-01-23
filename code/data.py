@@ -249,7 +249,7 @@ class DataGeneratorMultiTarget(tf.keras.utils.Sequence):
             np.random.shuffle(self.filenames)
 
 class DataGeneratorAny2Any(tf.keras.utils.Sequence):
-    def __init__(self, base_path, batch_size=1, img_dim=(256,256,1), validation_split=0.9, is_training=True, scale_factor=1.0, shuffle=True):
+    def __init__(self, base_path, batch_size=1, img_dim=(256,256,1), validation_split=0.9, is_training=True, scale_factor=1.0, decimation_factor=1, shuffle=True):
         self.img_dim = img_dim
         self.batch_size = batch_size
         
@@ -257,7 +257,10 @@ class DataGeneratorAny2Any(tf.keras.utils.Sequence):
         self.is_training = is_training
         self.scale_factor = scale_factor
 
-        self.base_path = base_path if(type(base_path) is list) else [base_path]
+        # self.base_path = base_path if(type(base_path) is list) else [base_path]
+        self.base_path = base_path
+
+        # self.decimation_factor = decimation_factor
 
         self.instruments = self.__get_instruments()
         self.filenames = self.__get_filenames()
@@ -265,6 +268,11 @@ class DataGeneratorAny2Any(tf.keras.utils.Sequence):
 
         self.shuffle = shuffle
         self.on_epoch_end()
+
+        # Trim the total filenames after shuffle. Ideally, examples of different instruments are uniformly distributed
+        self.decimation_factor = decimation_factor
+        if(self.decimation_factor < 1 and self.decimation_factor > 0):
+            self.filenames = self.filenames[0:int(len(self.filenames)*self.decimation_factor)]
 
     def __len__(self):
         'Denotes the number of batches per epoch'
@@ -286,12 +294,13 @@ class DataGeneratorAny2Any(tf.keras.utils.Sequence):
         return self.__getitem__(random_idx)
 
     def __get_instruments(self):
-        instruments = [ f for f in os.listdir(self.base_path) if os.path.isdir(f) ]
+        instruments = [ f for f in os.listdir(self.base_path) ]
+        print(instruments)
         return instruments
 
     def __get_style(self, target):
         style = np.random.choice(self.filenames)['name']        # From outside the batch (pick from all filenames)
-        style.replace('instrument_placeholder', target)         # Make it match the target
+        style.replace(self.instruments[0], target)              # Make it match the target
         return style 
 
     def __data_generation(self, batch_filenames):
@@ -301,8 +310,8 @@ class DataGeneratorAny2Any(tf.keras.utils.Sequence):
         # Generate data
         for i, filename in enumerate(batch_filenames):
             style = self.__get_style(filename['target'])                                           
-            original = filename['name'].replace('instrument_placeholder', filename['origin'])
-            output = filename['name'].replace('instrument_placeholder', filename['target'])
+            original = filename['name'].replace(self.instruments[0], filename['origin'])
+            output = filename['name'].replace(self.instruments[0], filename['target'])
 
             x[i,:,:,0:1] = np.load(original)
             x[i,:,:,1:2] = np.load(style)
@@ -318,14 +327,14 @@ class DataGeneratorAny2Any(tf.keras.utils.Sequence):
 
     def __get_filenames(self):
         origin_filenames = []
-        for base_path in self.base_path:
-            origin_temp = []
-            origin_temp.append(*[os.path.join(base_path, 'instrument_placeholder', f) for f in os.listdir(os.path.join(base_path, self.instruments[0]))]) # Arbitrary choice [0]
-            if(self.is_training):
-                origin_temp = origin_temp[0:int(self.validation_split*len(origin_temp))]
-            else:
-                origin_temp = origin_temp[int(self.validation_split*len(origin_temp)):]
-            origin_filenames += origin_temp
+        # for base_path in self.base_path:
+        # origin_temp = []
+        origin_temp = [os.path.join(self.base_path, self.instruments[0], f) for f in os.listdir(os.path.join(self.base_path, self.instruments[0]))] # Arbitrary choice [0]
+        if(self.is_training):
+            origin_temp = origin_temp[0:int(self.validation_split*len(origin_temp))]
+        else:
+            origin_temp = origin_temp[int(self.validation_split*len(origin_temp)):]
+        origin_filenames += origin_temp
         
         filenames = []
         for f in origin_filenames:
