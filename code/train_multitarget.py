@@ -58,7 +58,8 @@ def find_lr(data, batch_size=1, start_lr=1e-9, end_lr=1):
     generator_optimizer = tf.keras.optimizers.Adam(lr=start_lr)
     discriminator_optimizer = tf.keras.optimizers.Adam(lr=start_lr)
 
-    model_name = data['training'].origin+'_2_any'
+    # model_name = data['training'].origin+'_2_any'
+    model_name = 'any_2_any'
     checkpoint_prefix = os.path.join(CHECKPOINT_DIR, model_name)
     if(not os.path.isdir(checkpoint_prefix)):
         os.makedirs(checkpoint_prefix)
@@ -199,7 +200,7 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
     print()
 
     # Precompute the test input and target for validation
-    audio_input = load_audio(os.path.join(TEST_AUDIOS_PATH, data['training'].origin+'.wav'))
+    audio_input = load_audio(os.path.join(TEST_AUDIOS_PATH, 'keyboard_acoustic.wav'))# data['training'].instruments[8]+'.wav')) # instruments[8] = keyboard_acoustic
     mag_input, phase = forward_transform(audio_input)
     mag_input = amplitude_to_db(mag_input)
     test_input = slice_magnitude(mag_input, mag_input.shape[0])
@@ -208,7 +209,8 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
     test_inputs = []
     test_targets = []
 
-    for t in data['training'].target:
+    test_instruments = ['keyboard_acoustic', 'guitar_acoustic', 'string_acoustic', 'synth_lead_synthetic']
+    for t in test_instruments:#data['training'].instruments:
         audio_target = load_audio(os.path.join(TEST_AUDIOS_PATH, t+'.wav'))
         mag_target, _ = forward_transform(audio_target)
         mag_target = amplitude_to_db(mag_target)
@@ -289,11 +291,11 @@ def train(data, epochs, batch_size=1, gen_lr=5e-6, disc_lr=5e-7, epoch_offset=0)
         init_directory(epoch_output)
 
         # Generate audios and save spectrograms for the entire audios
-        for j in range(len(data['training'].target)):
+        for j in range(len(test_instruments)):
             prediction = generator(test_inputs[j], training=False)
             prediction = (prediction + 1) / 2
-            generate_images(prediction, (test_inputs[j] + 1) / 2, (test_targets[j] + 1) / 2, os.path.join(epoch_output, 'spectrogram_'+data['training'].target[j]))
-            generate_audio(prediction, phase, os.path.join(epoch_output, 'audio_'+data['training'].target[j]+'.wav'))
+            generate_images(prediction, (test_inputs[j] + 1) / 2, (test_targets[j] + 1) / 2, os.path.join(epoch_output, 'spectrogram_'+test_instruments[j]))
+            generate_audio(prediction, phase, os.path.join(epoch_output, 'audio_'+test_instruments[j]+'.wav'))
         print('Epoch outputs saved in ' + epoch_output)
 
         # Save the weights
@@ -317,6 +319,7 @@ if __name__ == '__main__':
     ap.add_argument('--gen_lr', required=False, default=5e-6)
     ap.add_argument('--disc_lr', required=False, default=5e-7)
     ap.add_argument('--validation_split', required=False, default=0.9)
+    ap.add_argument('--decimation_factor', required=False, default=0.01)
     ap.add_argument('--findlr', required=False, default=False)
     args = ap.parse_args()
 
@@ -358,7 +361,8 @@ if __name__ == '__main__':
                                                 img_dim=IMG_DIM,
                                                 validation_split=float(args.validation_split),
                                                 is_training=True,
-                                                scale_factor=1
+                                                scale_factor=1,
+                                                decimation_factor=float(args.decimation_factor)
                                             ),
 
         'validation': DataGeneratorAny2Any(
@@ -368,6 +372,7 @@ if __name__ == '__main__':
                                                 validation_split=float(args.validation_split),
                                                 is_training=False,
                                                 scale_factor=1,
+                                                decimation_factor=float(args.decimation_factor),
                                                 shuffle=False
                                             )
     }
